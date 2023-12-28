@@ -1,1 +1,1 @@
-# inpaint_mini
+# inpaint_wechat
