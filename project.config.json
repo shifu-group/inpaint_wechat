@@ -18,7 +18,20 @@
   "projectname": "4",
   "condition": {},
   "packOptions": {
-    "ignore": [],
+    "ignore": [
+      {
+        "value": "README.md",
+        "type": "file"
+      },
+      {
+        "value": ".idea",
+        "type": "folder"
+      },
+      {
+        "value": "media",
+        "type": "folder"
+      }
+    ],
     "include": []
   },
   "editorSetting": {
