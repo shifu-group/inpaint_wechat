@@ -15,9 +15,7 @@ Inpaint_wechat是一款基于 MI-GAN 模型的微信小程序，实现了图片�
 鉴于微信小程序仅支持有限的算子，为了弥补这一限制，本程序采用了 WebAssembly (wasm) 技术，并结合适配微信的 OpenCV 技术，以实现对模型的预处理和后处理。
 
 ## Demo
-![照片修复小助手](media/origin.jpg)
-![照片修复小助手](media/mask.jpg)
-![照片修复小助手](media/result.jpg)
+![照片修复小助手](media/merge.jpg)
 ## QR Code for the Wechat App （微信小程序二维码）
 ![照片修复小助手](images/mini_code.jpg)
 ## Contact

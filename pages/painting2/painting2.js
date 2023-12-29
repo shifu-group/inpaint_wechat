@@ -20,7 +20,8 @@ Page({
     canvasHeight: 0,
     windowHeight: 0,
     dpr: 1,
-    migan: null
+    migan: null,
+    hasChoosedImg: false,
   },
   /**
    * 生命周期函数--监听页面加载
@@ -310,7 +311,8 @@ Page({
             that.setData({
               canvasHeight: height,
               canvasWidth: width,
-              cover: tmpPicPath
+              cover: tmpPicPath,
+              hasChoosedImg: true,
             });
             that.initCanvas();
           }

@@ -55,3 +55,9 @@ slider {
 .mini-btn{
   font-size: 30rpx;
 }
+
+.failText {
+  margin-top: 100px;
+  text-align: center;
+  color: #888;
+}

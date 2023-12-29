@@ -1,7 +1,9 @@
 <!--painting-2.wxml-->
 <view style="height: 100vh;" class="flex_column" catch:tap="hideBarsHandler">
   <!-- 涂鸦区 -->
-  <view style="flex: 1; position: relative;" catch:touchstart="hideBarsHandler">
+  <view style="flex: 1; position: relative;" class="failText" wx:if="{{!hasChoosedImg}}" catch:tap="openFile">没有选择照片，点击选择</view>
+
+  <view wx:if="{{hasChoosedImg}}" style="flex: 1; position: relative;" catch:touchstart="hideBarsHandler">
     <image src="{{cover}}"
            mode="aspectFit"
            style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1; width: {{canvasWidth}}px; height: {{canvasHeight}}px;"
