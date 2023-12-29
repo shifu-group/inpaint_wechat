@@ -4,7 +4,6 @@ page {
   overflow: hidden;
   box-sizing: border-box;
   padding-bottom: 0 !important;
-  background-color: #242424 !important;
 }
 
 .colorBtn {
@@ -13,11 +12,11 @@ page {
   border-radius: 50%;
   margin-right: 20rpx;
   display: inline-block;
-  border: 6rpx solid #242424;
+  border: 3rpx solid white;
 }
 
 .colorBtn.select {
-  border: 6rpx solid #FFF;
+  border: 4rpx solid #a88cf8;
 }
 
 .bars {
@@ -51,4 +50,8 @@ slider {
 .space {
   display: flex;
   justify-content: space-between;
+}
+
+.mini-btn{
+  font-size: 30rpx;
 }

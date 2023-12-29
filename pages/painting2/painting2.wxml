@@ -20,8 +20,10 @@
   <view style="padding: 20rpx 30rpx 20rpx; ">
     <view class="space vertical_center">
       <!-- 颜色选择器代码 -->
+    
       <scroll-view scroll-x style="height: 60rpx;">
-        <view style="white-space: nowrap;">
+        <view style="white-space: nowrap;display: flex;align-items: center">
+          <view style="width: 110rpx;font-size: 35rpx;">颜色：</view>
           <block wx:for="{{colors}}" wx:key="index">
             <view style="background-color: {{item}};" class="colorBtn {{selectColor == item && 'select'}}" catch:tap="colorChange" data-color="{{item}}"></view>
           </block>
@@ -30,25 +32,20 @@
 
       <!-- 字号调整代码 -->
       <view style="margin-left: 20rpx;display: flex; align-items: center"> <!-- 添加了左边距，以增加两部分之间的间隔 -->
-        <view style="width: 110rpx;color: #ffffff; font-size: 35rpx ">笔宽：</view>
+        <view style="width: 110rpx;font-size: 35rpx ">粗细：</view>
         <slider style="width: 200rpx; flex: 1;" value="{{selectSize}}" step="1" min="10" max="50" block-size="12" activeColor="#a88cf8" bindchange="sizeHandler" />
-        <view style="width: 50rpx; text-align: right; color: #ffffff; font-size: 35rpx">{{selectSize}}</view>
+        <view style="width: 50rpx; text-align: right;font-size: 35rpx">{{selectSize}}</view>
       </view>
     </view>
 
-    <view class="space" style="padding: 30rpx 0rpx 20rpx; color: #FFF; font-size: 30rpx; line-height: 56rpx;">
-      <view catch:tap="openFile">打开</view>
-      <view style="width: 30rpx;"></view>
-      <view catch:tap="inPaint">消除</view>
-      <view style="width: 30rpx;"></view>
-      <view catch:tap="restore">取消</view>
-      <view style="width: 30rpx;"></view>
-      <view catch:tap="save">保存</view>
-      <view style="flex: 1;"></view>
-      <!-- <view catch:tap="rubberHandler">橡皮擦</view> -->
-      <!-- <view style="width: 30rpx;"></view> -->
-      <view catch:tap="clearRect">清除</view>
-      <view style="width: 30rpx;"></view>
+    <view class="space" style="padding: 10rpx 10rpx 30rpx; font-size: 15rpx; line-height: 56rpx;">
+      <block>
+      <button class="mini-btn" catch:tap="openFile">打开</button>
+      </block>
+      <button class="mini-btn" catch:tap="save">保存</button>
+      <button class="mini-btn" type="primary" plain="true"  catch:tap="inPaint">消除</button>
+      <button class="mini-btn" catch:tap="restore">回退</button>
+      <button class="mini-btn" catch:tap="clearRect">重选</button>
     </view>
   </view>
 </view>
