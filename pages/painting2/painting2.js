@@ -354,5 +354,17 @@ Page({
         console.error('图像处理出错：', error);
       }
     }
+  },
+  onShareAppMessage() {
+    return {
+      title: '照片修复小助手',
+      imageUrl: '/images/mini_code.jpg'
+    }
+  },
+  onShareTimeline() {
+    return {
+      title: '照片修复小助手',
+      imageUrl: '/images/mini_code.jpg'
+    }
   }
 })

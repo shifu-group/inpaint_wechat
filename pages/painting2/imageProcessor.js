@@ -105,6 +105,14 @@ export async function inPaint(imageFile, maskFile, model, selectColor) {
         return resultFilePath;
     } catch (error) {
         console.error(error);
+        wx.showToast({
+          title: '运行失败',
+          icon: 'error',
+          duration: 2000
+        })
+        setTimeout(function () {
+          wx.hideLoading()
+        }, 200)
         throw error;
     }
 }

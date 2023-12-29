@@ -33,9 +33,6 @@ export class Migan {
       console.log("Begin downloading model");
 
       const url = 'https://test-1306637385.cos.ap-nanjing.myqcloud.com/migan.onnx'
-      //const url = "https://huggingface.co/lxfater/inpaint-web/resolve/main/migan.onnx";
-      // const url = "https://huggingface.co/andraniksargsyan/migan/resolve/main/migan_pipeline_v2.onnx";
-
       try {
         // 下载模型
         const downloadResult = await this.downloadFile(url, (r) => {
@@ -51,7 +48,6 @@ export class Migan {
         console.log("Saved onnx model at path: " + modelPath);
       } catch (downloadError) {
         console.error(downloadError);
-        await this.retryOrChooseFile(modelPath);
       }
     }
 
@@ -110,11 +106,9 @@ export class Migan {
             resolve(res);
           } else {
             console.error(`Download failed with status code: ${res.statusCode}`);
-            this.retryOrChooseFile(resolve, reject, err);
           }
         },
         fail: err => {
-          this.retryOrChooseFile(resolve, reject, err);
         },
       });
 
@@ -127,35 +121,11 @@ export class Migan {
     });
   }
 
-  async retryOrChooseFile(modelPath) {
-    try {
-      const chooseFileRes = await wx.chooseMessageFile({
-        count: 1,
-        type: 'file',
-      });
-
-      const tempFilePath = chooseFileRes.tempFiles[0]?.path;
-
-      if (!tempFilePath) {
-        throw new Error('Invalid temp file path');
-      }
-
-      await wx.getFileSystemManager().saveFile({
-        tempFilePath,
-        filePath: modelPath,
-      });
-
-      console.log("Saved onnx model at path: " + modelPath);
-      await this.createInferenceSession(modelPath);
-    } catch (chooseFileError) {
-      console.error(chooseFileError);
-      // 处理选择文件失败的情况
-    }
-  }
-
   async execute(image, mask) {
     this.showDebugLog(" - the image is processing");
-
+    wx.showLoading({
+      title: '正在处理中，请耐心等待。。。',
+    })
     // 获取裁剪边界框坐标
     const [x_min, x_max, y_min, y_max] = this.getMaskedBbox(mask);
 
@@ -181,7 +151,9 @@ export class Migan {
     // 更新原始图像
     const imageResult = this.mergeResultWithImage(image, postResult, x_min, x_max, y_min, y_max);
     this.showDebugLog(" - the converted image is generated");
-
+    setTimeout(function () {
+      wx.hideLoading()
+    }, 200)
     return imageResult;
     //*/
     /* for test without phone.
