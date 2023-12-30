@@ -75,7 +75,24 @@ Page({
 
     if (This.migan && This.migan.isReady()) {
       This.migan.dispose();
-    }
+    };
+
+    const basepath = `${wx.env.USER_DATA_PATH}`;
+    wx.getFileSystemManager().readdir({
+      dirPath: basePath, /// 获取文件列表
+      success(res){
+        console.log(res)
+        res.files.forEach((val) => { // 遍历文件列表里的数据
+          console.log(val)
+          if (val.startsWith("pic_migan")) {
+            xx2.unlink({
+              filePath: basePath + '/' + val
+            })
+          }
+        })
+      }
+    });
+
   },
 
   colorChange(e) {

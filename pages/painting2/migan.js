@@ -492,13 +492,13 @@ export class Migan {
     const base64Img = this.imageDataToDataURL(image);
     const number = Math.random();
     wx.getFileSystemManager().writeFile({
-        filePath: wx.env.USER_DATA_PATH + '/pic' + number + '.jpg',
+        filePath: wx.env.USER_DATA_PATH + '/pic_migan' + number + '.jpg',
         data: base64Img.replace(/^data:image\/\w+;base64,/, ""),
         encoding: 'base64',
         success: async (res) => {
             try {
                 await wx.saveImageToPhotosAlbum({
-                    filePath: wx.env.USER_DATA_PATH + '/pic' + number + '.jpg',
+                    filePath: wx.env.USER_DATA_PATH + '/pic_migan' + number + '.jpg',
                     success(res) {
                         wx.showToast({ title: '分享图已成功保存到相册', icon: 'none' });
                     },
