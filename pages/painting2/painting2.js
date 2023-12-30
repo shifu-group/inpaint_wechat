@@ -95,6 +95,28 @@ Page({
 
   },
 
+  onShareAppMessage:function(options) {
+    return {
+      title: '照片修复小小助手',
+      imageUrl:'/images/mini_code.png',
+      path: '/pages/painting2'
+    }
+  },
+  onShareTimeline:function(){
+    return {
+      title: '照片修复小小助手',
+      imageUrl:'/images/mini_code.png',
+      query:''
+    }
+  },
+  onAddToFavorites:function(options) {
+    return {
+      title: '照片修复小小助手题',
+      imageUrl:'/images/mini_code.png',
+      query: '',
+    }
+  },
+
   colorChange(e) {
     const color = e.currentTarget.dataset.color;
     this.setData({
