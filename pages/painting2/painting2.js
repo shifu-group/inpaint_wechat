@@ -77,7 +77,7 @@ Page({
       This.migan.dispose();
     };
 
-    const basepath = `${wx.env.USER_DATA_PATH}`;
+    const basePath = `${wx.env.USER_DATA_PATH}`;
     wx.getFileSystemManager().readdir({
       dirPath: basePath, /// 获取文件列表
       success(res){
