@@ -111,7 +111,7 @@ Page({
   },
   onAddToFavorites:function(options) {
     return {
-      title: '照片修复小小助手题',
+      title: '照片修复小小助手',
       imageUrl:'/images/mini_code.png',
       query: '',
     }
