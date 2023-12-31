@@ -28,11 +28,9 @@ async function loadImage(imgUrl) {
 
 }
 
-function readAndConvertToRGB(imgData) {
-    const src = cv.imread(imgData);
+function convertToRGB(src) {
     const src_rgb = new cv.Mat();
     cv.cvtColor(src, src_rgb, cv.COLOR_RGBA2RGB);
-    src.delete();
     return src_rgb;
 }
 
@@ -84,7 +82,8 @@ export async function inPaint(imageFile, maskFile, model, selectColor) {
         const originalMask = await loadImage(maskFile);
 
         // 使用 OpenCV 读取图像数据
-        const img = readAndConvertToRGB(originalImg);
+        const src = cv.imread(originalImg);
+        const img = convertToRGB(src);
 
         // 使用 OpenCV 读取掩码图像
         const maskInput = cv.imread(originalMask);
@@ -95,11 +94,12 @@ export async function inPaint(imageFile, maskFile, model, selectColor) {
         maskInput.delete();
 
         // 执行模型推理
-        const resultArray = await model.execute(img, mask);
+        const resultArray = await model.execute(img, mask, src);
         const resultImage = cv.matFromArray(img.rows, img.cols, cv.CV_8UC4, resultArray);
         const resultFilePath = await saveImageDataToTempFile(resultImage);
         mask.delete();
         img.delete();
+        src.delete();
         resultImage.delete();
 
         return resultFilePath;

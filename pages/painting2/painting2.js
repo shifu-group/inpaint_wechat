@@ -98,21 +98,21 @@ Page({
   onShareAppMessage:function(options) {
     return {
       title: '照片修复小小助手',
-      imageUrl:'/images/mini_code.png',
+      imageUrl:'/images/mini_code.jpg',
       path: '/pages/painting2'
     }
   },
   onShareTimeline:function(){
     return {
       title: '照片修复小小助手',
-      imageUrl:'/images/mini_code.png',
+      imageUrl:'/images/mini_code.jpg',
       query:''
     }
   },
   onAddToFavorites:function(options) {
     return {
       title: '照片修复小小助手',
-      imageUrl:'/images/mini_code.png',
+      imageUrl:'/images/mini_code.jpg',
       query: '',
     }
   },
@@ -394,18 +394,6 @@ Page({
       } catch (error) {
         console.error('图像处理出错：', error);
       }
-    }
-  },
-  onShareAppMessage() {
-    return {
-      title: '照片修复小助手',
-      imageUrl: '/images/mini_code.jpg'
-    }
-  },
-  onShareTimeline() {
-    return {
-      title: '照片修复小助手',
-      imageUrl: '/images/mini_code.jpg'
     }
   }
 })

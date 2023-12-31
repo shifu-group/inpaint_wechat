@@ -1,5 +1,6 @@
-# Inpaint_wechat
-Inpaint_wechat is a WeChat mini-program based on the MI-GAN model, implementing the functionality of eliminating and repairing selected areas in images. 
+# Inpaint_wechat(照片修复小小助手)
+Inpaint_wechat is a WeChat mini-program based on the WeChat AI capabilities, implementing the functionality of inpainting and repairing selected areas in images,  which is purely implemented by the client and has no server.
+
 
 The program draws inspiration from the logic and some code of the original MI-GAN project and inpaint_web project.
 
@@ -8,19 +9,22 @@ Additionally, it integrates with WeChat-adapted OpenCV techniques to achieve mod
 
 
 
-Inpaint_wechat是一款基于 MI-GAN 模型的微信小程序，实现了图片选定区域的消除修复功能。
+Inpaint_wechat是一款基于微信AI能力的微信小程序，实现了图片选定区域的消除修复功能，纯客户端实现，无服务端。
+
 
 本程序借鉴了 MI-GAN 原项目和 inpaint_web 网页实现项目的逻辑以及部分代码。
 
 鉴于微信小程序仅支持有限的算子，为了弥补这一限制，本程序采用了 WebAssembly (wasm) 技术，并结合适配微信的 OpenCV 技术，以实现对模型的预处理和后处理。
 
-## Demo
+## Demo(1.选择图片2.选择区域3.消除)
 ![照片修复小助手](media/merge.jpg)
-## QR Code for the Wechat App （微信小程序二维码）
+## QR Code for the Wechat App （扫描微信小程序二维码打开小程序）
 ![照片修复小助手](images/mini_code.jpg)
 ## Contact
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/rules4thing?style=social)](https://x.com/zhiyuan54030554)
+
+[📺 bilibili](https://space.bilibili.com/2031846058)
 
 ## Reference
 

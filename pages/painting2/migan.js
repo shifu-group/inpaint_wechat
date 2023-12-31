@@ -121,7 +121,7 @@ export class Migan {
     });
   }
 
-  async execute(image, mask) {
+  async execute(image, mask, src) {
     this.showDebugLog(" - the image is processing");
     wx.showLoading({
       title: '正在处理中，请耐心等待。。。',
@@ -149,7 +149,8 @@ export class Migan {
     croppedMask.delete();
 
     // 更新原始图像
-    const imageResult = this.mergeResultWithImage(image, postResult, x_min, x_max, y_min, y_max);
+    const imageResult = this.mergeResultWithImage(src, postResult, x_min, x_max, y_min, y_max);
+    postResult.delete();
     this.showDebugLog(" - the converted image is generated");
     setTimeout(function () {
       wx.hideLoading()
@@ -164,9 +165,7 @@ export class Migan {
   }
 
    mergeResultWithImage(image, postData, x_min, x_max, y_min, y_max) {
-     const src_rgba = new cv.Mat();
-     cv.cvtColor(image, src_rgba, cv.COLOR_RGB2RGBA);
-     const imageDataArray = new Uint8ClampedArray(src_rgba.data);
+     const imageDataArray = new Uint8ClampedArray(image.data);
      const postDataArray = new Uint8ClampedArray(postData.data);
      const channels = 4;
 
@@ -402,6 +401,7 @@ export class Migan {
 
     // Compose the final image
     const composedImg = this.createComposedImage(image, maskBlur, outImgMat);
+    maskBlur.delete();
     outImgMat.delete();
     this.showDebugLog(" - postprogess: createComposedImage is completed");
 
@@ -483,7 +483,7 @@ export class Migan {
   showDebugLog(logMessage) {
     if (this.debugMode) {
       const currentTime = new Date();
-      const formattedTime = currentTime.toISOString().slice(0, 19).replace("T", " "); // 获取时间戳字符串，格式为YYYY-MM-DD HH:mm:ss
+      const formattedTime = currentTime.toISOString().slice(0, 23).replace("T", " "); // 获取时间戳字符串，格式为YYYY-MM-DD HH:mm:ss
       console.log(formattedTime + logMessage);
     }
   }
