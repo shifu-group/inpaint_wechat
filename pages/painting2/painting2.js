@@ -310,7 +310,8 @@ Page({
       canvas: this.data.canvasElement,
       success: function (res) {
         const tmpPicPath = res.tempFilePath;
-        const maskPicPath = `${wx.env.USER_DATA_PATH}/pic_inpaint_mask.png`;
+        const fileName = tmpPicPath.substr(tmpPicPath.lastIndexOf("/") + 1)
+        const maskPicPath = `${wx.env.USER_DATA_PATH}/pic_inpaint_${fileName}.png`;
         wx.getFileSystemManager().saveFile({
           tempFilePath: tmpPicPath,
           filePath: maskPicPath,
