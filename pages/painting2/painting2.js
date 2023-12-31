@@ -1,7 +1,9 @@
 // painting-2.js
 global.wasm_url = '/utils/opencv3.4.16.wasm.br'
 // opencv_exec.js会从global.wasm_url获取wasm路径
-import { Migan } from './migan.js';
+import {
+  Migan
+} from './migan.js';
 import * as imageProcessor from './imageProcessor';
 
 let penType = 'drawPen';
@@ -22,12 +24,14 @@ Page({
     dpr: 1,
     migan: null,
     hasChoosedImg: false,
+    hasMask: false
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    let that =this;
+    this.unlink();
+    let that = this;
     wx.getSystemInfo({
       success: function (res) {
         that.setData({
@@ -41,12 +45,13 @@ Page({
     const dpr = wx.getWindowInfo().pixelRatio
     this.setData({
       dpr: dpr,
-      cover: options["cover"] || "../../images/paint2.jpg",
       previousCover: null
     });
 
     // Load the module
-    wx.showLoading({ title: '模型正在加载...' });
+    wx.showLoading({
+      title: '模型正在加载...'
+    });
     const migan = new Migan();
     migan.load().then(() => {
       wx.hideLoading();
@@ -76,43 +81,43 @@ Page({
     if (This.migan && This.migan.isReady()) {
       This.migan.dispose();
     };
-
+    this.unlink();
+  },
+  unlink: function (options) {
     const basePath = `${wx.env.USER_DATA_PATH}`;
     wx.getFileSystemManager().readdir({
       dirPath: basePath, /// 获取文件列表
-      success(res){
+      success(res) {
         console.log(res)
         res.files.forEach((val) => { // 遍历文件列表里的数据
           console.log(val)
-          if (val.startsWith("pic_migan")) {
-            xx2.unlink({
+          if (val.startsWith("pic_inpaint")) {
+            wx.getFileSystemManager().unlink({
               filePath: basePath + '/' + val
             })
           }
         })
       }
     });
-
   },
-
-  onShareAppMessage:function(options) {
+  onShareAppMessage: function (options) {
     return {
       title: '照片修复小小助手',
-      imageUrl:'/images/mini_code.jpg',
+      imageUrl: '/images/mini_code.jpg',
       path: '/pages/painting2'
     }
   },
-  onShareTimeline:function(){
+  onShareTimeline: function () {
     return {
       title: '照片修复小小助手',
-      imageUrl:'/images/mini_code.jpg',
-      query:''
+      imageUrl: '/images/mini_code.jpg',
+      query: ''
     }
   },
-  onAddToFavorites:function(options) {
+  onAddToFavorites: function (options) {
     return {
       title: '照片修复小小助手',
-      imageUrl:'/images/mini_code.jpg',
+      imageUrl: '/images/mini_code.jpg',
       query: '',
     }
   },
@@ -253,7 +258,7 @@ Page({
 
   // 回退一步
   restore() {
-    if (this.data.previousCover ) {
+    if (this.data.previousCover) {
       this.setData({
         cover: this.data.previousCover,
         imageList: [],
@@ -264,8 +269,8 @@ Page({
     this.clearRect();
   },
 
-  setPreviousCover () {
-    if (this.data.previousCover && this.data.previousCover.startsWith("http://usr/") ) {
+  setPreviousCover() {
+    if (this.data.previousCover && this.data.previousCover.startsWith("http://usr/")) {
       // 删除临时文件
       wx.getFileSystemManager().unlink({
         filePath: this.data.previousCover,
@@ -291,7 +296,8 @@ Page({
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       this.setData({
         imageList: [],
-        isDraw: false
+        isDraw: false,
+        hasMask: false
       });
     }
   },
@@ -303,13 +309,32 @@ Page({
       canvasId: 'myCanvas',
       canvas: this.data.canvasElement,
       success: function (res) {
-        that.data.imageList[0] = res.tempFilePath;
+        const tmpPicPath = res.tempFilePath;
+        const maskPicPath = `${wx.env.USER_DATA_PATH}/pic_inpaint_mask.png`;
+        wx.getFileSystemManager().saveFile({
+          tempFilePath: tmpPicPath,
+          filePath: maskPicPath,
+          success: (res) => {
+            that.data.imageList[0] = maskPicPath;
+            that.setData({
+              hasMask: true
+            })
+          }
+        });
       },
       fail: function (err) {}
     })
   },
 
   async save() {
+    if (!this.data.hasChoosedImg) {
+      wx.showToast({
+        title: '请选择图片',
+        icon: 'error',
+        duration: 2000
+      })
+      return
+    }
     const filePath = this.data.cover;
     try {
       const res = await new Promise((resolve, reject) => {
@@ -319,16 +344,25 @@ Page({
           fail: reject
         });
       });
-      wx.showToast({ title: '生成图片已成功保存到相册', icon: 'none' });
+      wx.showToast({
+        title: '生成图片已成功保存到相册',
+        icon: 'none'
+      });
       this.setPreviousCover();
       // 清理操作
       this.clearRect();
 
     } catch (error) {
       if (error.errMsg === 'saveImageToPhotosAlbum:fail auth deny') {
-        wx.showToast({ title: '请授权保存图片权限以保存分享图', icon: 'none' });
+        wx.showToast({
+          title: '请授权保存图片权限以保存分享图',
+          icon: 'none'
+        });
       } else {
-        wx.showToast({ title: '生成图片失败，请重试', icon: 'none' });
+        wx.showToast({
+          title: '生成图片失败，请重试',
+          icon: 'none'
+        });
       }
     }
   },
@@ -336,11 +370,16 @@ Page({
   //装载图片
   openFile() {
     const that = this;
-    wx.chooseImage({
+    wx.chooseMedia({
+      count: 1,
+      mediaType: ['image'],
       success: function (res) {
-        const tmpPicPath = res.tempFiles[0].path
+        const tmpPicPath = res.tempFiles[0].tempFilePath
+        const fileName = tmpPicPath.substr(tmpPicPath.lastIndexOf("/") + 1)
+        const picPath = `${wx.env.USER_DATA_PATH}/pic_inpaint_${fileName}`;
+        wx.getFileSystemManager().saveFileSync(tmpPicPath, picPath)
         wx.getImageInfo({
-          src: tmpPicPath,
+          src: picPath,
           success: function (res) {
             let [height, width] = [Math.floor(that.data.windowWidth / res.width * res.height), that.data.windowWidth];
             if (height > that.data.windowHeight - 100) {
@@ -350,19 +389,19 @@ Page({
             that.setData({
               canvasHeight: height,
               canvasWidth: width,
-              cover: tmpPicPath,
+              cover: picPath,
               hasChoosedImg: true,
             });
             that.initCanvas();
           }
 
-       })
+        })
       }
     })
   },
 
   //inPaint
-  async  inPaint() {
+  async inPaint() {
     /*
     if (!this.data.migan.isReady()) {
       // console.log("the module is not loaded");
@@ -370,7 +409,23 @@ Page({
     };
 
     */
+    if (!this.data.hasChoosedImg) {
+      wx.showToast({
+        title: '请选择图片',
+        icon: 'error',
+        duration: 2000
+      })
+      return
+    }
 
+    if (!this.data.hasMask) {
+      wx.showToast({
+        title: '请选择要消除的区域',
+        icon: 'error',
+        duration: 2000
+      })
+      return
+    }
     if (this.data.isDraw) {
       try {
         // 在 canvas 中显示处理结果的临时文件路径

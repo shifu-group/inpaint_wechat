@@ -24,14 +24,16 @@ export class Migan {
     // 判断之前是否已经下载过onnx模型
     try {
 
-      await wx.getFileSystemManager().access({
-        path: modelPath,
-      });
+      await wx.getFileSystemManager().accessSync(modelPath);
       console.log("File already exists at: " + modelPath);
     } catch (error) {
       console.error(error);
       console.log("Begin downloading model");
-
+      wx.showToast({
+        title: '尝试下载模型',
+        icon: 'success',
+        duration: 2000
+      })
       const url = 'https://test-1306637385.cos.ap-nanjing.myqcloud.com/migan.onnx'
       try {
         // 下载模型
@@ -93,26 +95,46 @@ export class Migan {
   }
 
 
-  async downloadFile(fileID, onCall = () => {}) {
-    if (!fileID) {
-      throw new Error('Invalid fileID');
+  async downloadFile(url, onCall = () => {}) {
+    if (!url) {
+      throw new Error('Invalid url');
     }
 
     return new Promise((resolve, reject) => {
       const downloadTask = wx.downloadFile({
-        fileID,
+        url: url,
         success: res => {
           if (res.statusCode === 200) {
-            resolve(res);
+            if (res.totalBytesExpectedToWrite === res.totalBytesWritten) {
+              setTimeout(function () {
+                wx.hideLoading()
+              }, 200)
+              wx.showToast({
+                title: '模型下载成功',
+                icon: 'success',
+                duration: 2000
+              })
+              resolve(res);
+            }
+
           } else {
             console.error(`Download failed with status code: ${res.statusCode}`);
           }
         },
-        fail: err => {
-        },
+        fail: err => {},
       });
 
       downloadTask.onProgressUpdate(res => {
+        if (res.totalBytesExpectedToWrite === res.totalBytesWritten) {
+          setTimeout(function () {
+            wx.hideLoading()
+          }, 200)
+        } else {
+          wx.showLoading({
+            title: '下载进度 ' + res.progress,
+          })
+        }
+
         if (onCall(res) === false) {
           downloadTask.abort();
           reject(new Error('Download aborted by onCall'));
@@ -164,28 +186,28 @@ export class Migan {
     */
   }
 
-   mergeResultWithImage(image, postData, x_min, x_max, y_min, y_max) {
-     const imageDataArray = new Uint8ClampedArray(image.data);
-     const postDataArray = new Uint8ClampedArray(postData.data);
-     const channels = 4;
+  mergeResultWithImage(image, postData, x_min, x_max, y_min, y_max) {
+    const imageDataArray = new Uint8ClampedArray(image.data);
+    const postDataArray = new Uint8ClampedArray(postData.data);
+    const channels = 4;
 
-      // 获取 postResult 的尺寸
-      const height = y_max - y_min;
-      const width = x_max - x_min;
+    // 获取 postResult 的尺寸
+    const height = y_max - y_min;
+    const width = x_max - x_min;
 
-      const imageCols = image.cols;
-      const channelsPerPixel = channels * width;
+    const imageCols = image.cols;
+    const channelsPerPixel = channels * width;
 
-      // 使用单层循环替换像素
-      for (let i = 0; i < height; i++) {
-          const imageRowOffset = (i + y_min) * imageCols * channels + x_min * channels;
-          const postDataRowOffset = i * width * channels;
+    // 使用单层循环替换像素
+    for (let i = 0; i < height; i++) {
+      const imageRowOffset = (i + y_min) * imageCols * channels + x_min * channels;
+      const postDataRowOffset = i * width * channels;
 
-          imageDataArray.set(postDataArray.subarray(postDataRowOffset, postDataRowOffset + channelsPerPixel), imageRowOffset);
-      }
+      imageDataArray.set(postDataArray.subarray(postDataRowOffset, postDataRowOffset + channelsPerPixel), imageRowOffset);
+    }
 
-      return imageDataArray;
-   }
+    return imageDataArray;
+  }
 
   async runSession(modelInput) {
     const xinput = {
@@ -222,7 +244,7 @@ export class Migan {
   getMaskedBbox(mask) {
     // Convert the input mask to a binary image
     const tempMask = new cv.Mat();
-    cv.bitwise_not(mask,tempMask);
+    cv.bitwise_not(mask, tempMask);
     const binaryMask = new cv.Mat();
     cv.threshold(tempMask, binaryMask, 254, 255, cv.THRESH_BINARY);
 
@@ -238,11 +260,11 @@ export class Migan {
     let yMax = Number.MIN_VALUE;
 
     for (let i = 0; i < contours.size(); ++i) {
-        const rect = cv.boundingRect(contours.get(i));
-        xMin = Math.min(xMin, rect.x);
-        xMax = Math.max(xMax, rect.x + rect.width);
-        yMin = Math.min(yMin, rect.y);
-        yMax = Math.max(yMax, rect.y + rect.height);
+      const rect = cv.boundingRect(contours.get(i));
+      xMin = Math.min(xMin, rect.x);
+      xMax = Math.max(xMax, rect.x + rect.width);
+      yMin = Math.min(yMin, rect.y);
+      yMax = Math.max(yMax, rect.y + rect.height);
     }
 
     // Apply padding
@@ -271,8 +293,8 @@ export class Migan {
     contours.delete();
     hierarchy.delete();
 
-    return [xMin, xMax, yMin, yMax ];
-}
+    return [xMin, xMax, yMin, yMax];
+  }
 
   preprocess(image, mask) {
     const dsize = new cv.Size(this.res, this.res); // 新尺寸
@@ -369,7 +391,7 @@ export class Migan {
       const channelData = channels.get(c).data; // 获取单个通道的数据
       for (let h = 0; h < H; h++) {
         for (let w = 0; w < W; w++) {
-          chwArray[c * H * W + h * W + w] = channelData[h * W + w] / 255 ;
+          chwArray[c * H * W + h * W + w] = channelData[h * W + w] / 255;
         }
       }
     };
@@ -411,8 +433,8 @@ export class Migan {
   createComposedImage(image, mask, modelOutput) {
     const imageRgba = new cv.Mat();
     cv.cvtColor(image, imageRgba, cv.COLOR_RGB2RGBA);
-    cv.bitwise_not(mask,mask);
-    modelOutput.copyTo(imageRgba,mask);
+    cv.bitwise_not(mask, mask);
+    modelOutput.copyTo(imageRgba, mask);
 
     return imageRgba;
   }
@@ -453,10 +475,10 @@ export class Migan {
   }
 
   gaussianSmoothing(inputMat) {
-    let channels = 1;  // 设置为图像的通道数
-    const kernelSize = 5;  // 设置卷积核的大小
-    const sigma = 1.0;  // 设置高斯函数的标准差
-    const dim = 2;  // 设置卷积核的维度
+    let channels = 1; // 设置为图像的通道数
+    const kernelSize = 5; // 设置卷积核的大小
+    const sigma = 1.0; // 设置高斯函数的标准差
+    const dim = 2; // 设置卷积核的维度
 
     // 确保 channels 不超过输入图像的通道数
     channels = 1;
@@ -492,32 +514,45 @@ export class Migan {
     const base64Img = this.imageDataToDataURL(image);
     const number = Math.random();
     wx.getFileSystemManager().writeFile({
-        filePath: wx.env.USER_DATA_PATH + '/pic_migan' + number + '.jpg',
-        data: base64Img.replace(/^data:image\/\w+;base64,/, ""),
-        encoding: 'base64',
-        success: async (res) => {
-            try {
-                await wx.saveImageToPhotosAlbum({
-                    filePath: wx.env.USER_DATA_PATH + '/pic_migan' + number + '.jpg',
-                    success(res) {
-                        wx.showToast({ title: '分享图已成功保存到相册', icon: 'none' });
-                    },
-                    fail(res) {
-                        wx.showToast({ title: '生成分享图失败，请重试', icon: 'none' });
-                    }
-                });
-            } catch (error) {
-                wx.showToast({ title: '请授权保存图片权限以保存分享图', icon: 'none' });
+      filePath: wx.env.USER_DATA_PATH + '/pic_inpaint' + number + '.jpg',
+      data: base64Img.replace(/^data:image\/\w+;base64,/, ""),
+      encoding: 'base64',
+      success: async (res) => {
+        try {
+          await wx.saveImageToPhotosAlbum({
+            filePath: wx.env.USER_DATA_PATH + '/pic_inpaint' + number + '.jpg',
+            success(res) {
+              wx.showToast({
+                title: '分享图已成功保存到相册',
+                icon: 'none'
+              });
+            },
+            fail(res) {
+              wx.showToast({
+                title: '生成分享图失败，请重试',
+                icon: 'none'
+              });
             }
-        },
-        fail: (err) => {
-            console.log(err);
+          });
+        } catch (error) {
+          wx.showToast({
+            title: '请授权保存图片权限以保存分享图',
+            icon: 'none'
+          });
         }
+      },
+      fail: (err) => {
+        console.log(err);
+      }
     });
   }
 
   imageDataToDataURL(input) {
-    const offscreenCanvas = wx.createOffscreenCanvas({type: '2d', width: input.cols, height: input.rows});
+    const offscreenCanvas = wx.createOffscreenCanvas({
+      type: '2d',
+      width: input.cols,
+      height: input.rows
+    });
     cv.imshow(offscreenCanvas, input);
     return offscreenCanvas.toDataURL(('image/jpg', 0.9));
   }
