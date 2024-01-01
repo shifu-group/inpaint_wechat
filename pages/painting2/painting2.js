@@ -45,7 +45,8 @@ Page({
     const dpr = wx.getWindowInfo().pixelRatio
     this.setData({
       dpr: dpr,
-      previousCover: null
+      previousCover: null,
+      hasPreviousCover: false
     });
 
     // Load the module
@@ -284,7 +285,8 @@ Page({
     };
 
     this.setData({
-      previousCover: null
+      previousCover: null,
+      hasPreviousCover: false
     });
   },
 
@@ -438,12 +440,14 @@ Page({
         const canvas = this.data.canvasElement;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         this.setData({
-          previousCover: this.data.cover
+          previousCover: this.data.cover,
+          hasPreviousCover: true
         }, () => {
           this.setData({
             cover: resultPath,
             imageList: [],
-            isDraw: false
+            isDraw: false,
+            hasMask: false
           });
         });
 

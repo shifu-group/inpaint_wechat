@@ -46,7 +46,7 @@
       </block>
       <button class="mini-btn" catch:tap="save">保存</button>
       <button class="mini-btn" type="primary" plain="{{!hasMask}}"  catch:tap="inPaint">消除</button>
-      <button class="mini-btn" catch:tap="restore">回退</button>
+      <button class="mini-btn" disabled="{{!hasPreviousCover}}" catch:tap="restore">回退</button>
       <button class="mini-btn" catch:tap="clearRect">重选</button>
     </view>
   </view>
