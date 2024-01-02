@@ -27,7 +27,7 @@ https://github.com/shifu-group/inpaint_wechat/assets/104042064/06260321-8666-495
 ![照片修复小助手](images/mini_code.jpg)
 ## Contact
 
-[![Twitter Follow](https://img.shields.io/twitter/follow/zhiyuana?style=social)](https://x.com/zhiyuan54030554)
+[![Twitter Follow](https://img.shields.io/twitter/follow/zhiyuan?style=social)](https://x.com/zhiyuan54030554)
 
 [📺 bilibili](https://space.bilibili.com/2031846058)
 
