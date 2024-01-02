@@ -105,7 +105,7 @@ Page({
     return {
       title: '照片修复小小助手',
       imageUrl: '/images/mini_code.jpg',
-      path: '/pages/painting2'
+      path: '/pages/painting2/painting2'
     }
   },
   onShareTimeline: function () {
