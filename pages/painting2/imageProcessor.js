@@ -112,8 +112,7 @@ export async function inPaint(imageFile, maskFile, model, selectColor) {
     maskInput.delete();
 
     // 执行模型推理
-    const resultArray = await model.execute(img, mask, src);
-    const resultImage = cv.matFromArray(img.rows, img.cols, cv.CV_8UC4, resultArray);
+    const resultImage = await model.execute(img, mask, src);
     const resultFilePath = await saveImageDataToTempFile(resultImage);
     mask.delete();
     img.delete();

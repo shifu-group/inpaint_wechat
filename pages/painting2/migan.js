@@ -171,12 +171,15 @@ export class Migan {
     croppedMask.delete();
 
     // 更新原始图像
-    const imageResult = this.mergeResultWithImage(src, postResult, x_min, x_max, y_min, y_max);
+    const imageResult = src.clone();
+    postResult.copyTo(imageResult.roi(new cv.Rect(x_min, y_min, x_max - x_min, y_max - y_min)));
     postResult.delete();
+
     this.showDebugLog(" - the converted image is generated");
     setTimeout(function () {
       wx.hideLoading()
     }, 200)
+
     return imageResult;
     //*/
     /* for test without phone.
@@ -184,29 +187,6 @@ export class Migan {
      cv.cvtColor(image, src_rgba, cv.COLOR_RGB2RGBA);
     return new Uint8ClampedArray(src_rgba.data);
     */
-  }
-
-  mergeResultWithImage(image, postData, x_min, x_max, y_min, y_max) {
-    const imageDataArray = new Uint8ClampedArray(image.data);
-    const postDataArray = new Uint8ClampedArray(postData.data);
-    const channels = 4;
-
-    // 获取 postResult 的尺寸
-    const height = y_max - y_min;
-    const width = x_max - x_min;
-
-    const imageCols = image.cols;
-    const channelsPerPixel = channels * width;
-
-    // 使用单层循环替换像素
-    for (let i = 0; i < height; i++) {
-      const imageRowOffset = (i + y_min) * imageCols * channels + x_min * channels;
-      const postDataRowOffset = i * width * channels;
-
-      imageDataArray.set(postDataArray.subarray(postDataRowOffset, postDataRowOffset + channelsPerPixel), imageRowOffset);
-    }
-
-    return imageDataArray;
   }
 
   async runSession(modelInput) {
