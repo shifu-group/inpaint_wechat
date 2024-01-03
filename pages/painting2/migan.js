@@ -433,8 +433,23 @@ export class Migan {
   createComposedImage(image, mask, modelOutput) {
     const imageRgba = new cv.Mat();
     cv.cvtColor(image, imageRgba, cv.COLOR_RGB2RGBA);
+
+    const outputArray = new Uint8ClampedArray(modelOutput.data);
+    const maskDataLength = mask.data.length;
+    for (let i = 0; i < maskDataLength; i++) {
+      if (mask.data[i] !==255 && mask.data[i] !==0) {
+        const realMark = mask.data[i]/255;
+        const realIndex = 4 * i;
+        outputArray[realIndex] = imageRgba.data[realIndex] * realMark + modelOutput.data[realIndex] * (1 - realMark);
+        outputArray[realIndex + 1] = imageRgba.data[realIndex + 1] * realMark + modelOutput.data[realIndex + 1] * (1 - realMark);
+        outputArray[realIndex + 2] = imageRgba.data[realIndex + 2] * realMark + modelOutput.data[realIndex + 2] * (1 - realMark);
+      }
+    };
+    const newOutput = cv.matFromArray(modelOutput.rows, modelOutput.cols, cv.CV_8UC4, outputArray);
+
     cv.bitwise_not(mask, mask);
-    modelOutput.copyTo(imageRgba, mask);
+    newOutput.copyTo(imageRgba, mask);
+    newOutput.delete();
 
     return imageRgba;
   }
@@ -467,7 +482,7 @@ export class Migan {
   }
 
   maxPool2D(src) {
-    let kernel = new cv.Mat.ones(3, 3, cv.CV_8U);
+    let kernel = new cv.Mat.ones(5, 5, cv.CV_8U);
     // 膨胀操作
     let dst = new cv.Mat();
     cv.dilate(src, dst, kernel, new cv.Point(-1, -1), 1, cv.BORDER_CONSTANT, cv.morphologyDefaultBorderValue());
@@ -477,7 +492,7 @@ export class Migan {
   gaussianSmoothing(inputMat) {
     let channels = 1; // 设置为图像的通道数
     const kernelSize = 5; // 设置卷积核的大小
-    const sigma = 1.0; // 设置高斯函数的标准差
+    const sigma = 1.5; // 设置高斯函数的标准差
     const dim = 2; // 设置卷积核的维度
 
     // 确保 channels 不超过输入图像的通道数
