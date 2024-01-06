@@ -30,7 +30,7 @@ https://github.com/shifu-group/inpaint_wechat/assets/104042064/06260321-8666-495
 
 1. Multiple elimination operations can be performed on the target area until satisfactory results are achieved.
 
-可以对目标区域进行多次的消除操作，直到对结果满意为止。
+可以对目标区域进行连续的多次消除操作，直到对结果满意为止。
 
 2. If you are not satisfied with the current result, you can use "undo" to cancel the operation and then reselect the area. 
 Please note that this operation is irreversible.
