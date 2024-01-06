@@ -25,6 +25,18 @@ https://github.com/shifu-group/inpaint_wechat/assets/104042064/06260321-8666-495
 ![照片修复小助手](media/merge.jpg)
 ## QR Code for the Wechat App （扫描微信小程序二维码打开小程序）
 ![照片修复小助手](images/mini_code.jpg)
+
+## Operation Tips (操作建议)
+
+1. Multiple elimination operations can be performed on the target area until satisfactory results are achieved.
+
+可以对目标区域进行多次的消除操作，直到对结果满意为止。
+
+2. If you are not satisfied with the current result, you can use "undo" to cancel the operation and then reselect the area. 
+Please note that this operation is irreversible.
+
+如果对当前结果不满意，可以用“回退”来取消操作，再重新选择区域。注意此操作不可逆。
+
 ## Contact
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/zhiyuan?style=social)](https://x.com/zhiyuan54030554)
