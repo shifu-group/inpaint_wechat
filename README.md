@@ -28,7 +28,7 @@ https://github.com/shifu-group/inpaint_wechat/assets/104042064/06260321-8666-495
 
 ## Operation Tips (操作建议)
 
-1. Multiple elimination operations can be performed on the target area until satisfactory results are achieved.
+1. Multiple inpainting operations can be performed on the target area until satisfactory results are achieved.
 
 可以对目标区域进行连续的多次消除操作，直到对结果满意为止。
 
