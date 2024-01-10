@@ -169,6 +169,8 @@ Page({
       // 缩放
       context.scale(dpr, dpr);
       // 设置默认属性
+      context.globalAlpha = 0.8;
+      context.globalCompositeOperation = "xor";
       context.strokeStyle = This.selectColor;
       context.lineWidth = This.selectSize;
       this.setData({
