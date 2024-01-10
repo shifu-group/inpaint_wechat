@@ -421,6 +421,7 @@ export class Migan {
     const imageRgba = new cv.Mat();
     cv.cvtColor(image, imageRgba, cv.COLOR_RGB2RGBA);
 
+   /*
     const outputArray = new Uint8ClampedArray(modelOutput.data);
     const maskDataLength = mask.data.length;
     for (let i = 0; i < maskDataLength; i++) {
@@ -433,10 +434,11 @@ export class Migan {
       }
     };
     const newOutput = cv.matFromArray(modelOutput.rows, modelOutput.cols, cv.CV_8UC4, outputArray);
-
+    */
     cv.bitwise_not(mask, mask);
-    newOutput.copyTo(imageRgba, mask);
-    newOutput.delete();
+    modelOutput.copyTo(imageRgba, mask);
+    //newOutput.copyTo(imageRgba, mask);
+    //newOutput.delete();
 
     return imageRgba;
   }
