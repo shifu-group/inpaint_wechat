@@ -18,16 +18,27 @@ export class Migan {
   }
 
   // 加载模型
-  async load() {
+  async load(forcedLoad) {
     const modelPath = `${wx.env.USER_DATA_PATH}/migan.onnx`;
     console.log(modelPath);
-    // 判断之前是否已经下载过onnx模型
-    try {
+    if (forcedLoad) {
+      await this.forcedLoad();
+    } else {
+      // 判断之前是否已经下载过onnx模型
+      try {
+        await wx.getFileSystemManager().accessSync(modelPath);
+        console.log("File already exists at: " + modelPath);
+      } catch (error) {
+        console.error(error);
+        await this.forcedLoad();
+      }
+    }
+    // 创建推断会话
+    await this.createInferenceSession(modelPath);
+  }
 
-      await wx.getFileSystemManager().accessSync(modelPath);
-      console.log("File already exists at: " + modelPath);
-    } catch (error) {
-      console.error(error);
+  async forcedLoad() {
+      const modelPath = `${wx.env.USER_DATA_PATH}/migan.onnx`;
       console.log("Begin downloading model");
       wx.showToast({
         title: '尝试下载模型',
@@ -38,7 +49,7 @@ export class Migan {
       try {
         // 下载模型
         const downloadResult = await this.downloadFile(url, (r) => {
-          console.log(`Download progress: ${r.progress}%, ${r.totalBytesWritten}B downloaded, ${r.totalBytesExpectedToWrite}B total`);
+          // console.log(`Download progress: ${r.progress}%, ${r.totalBytesWritten}B downloaded, ${r.totalBytesExpectedToWrite}B total`);
         });
 
         // 保存模型到本地
@@ -51,10 +62,6 @@ export class Migan {
       } catch (downloadError) {
         console.error(downloadError);
       }
-    }
-
-    // 创建推断会话
-    await this.createInferenceSession(modelPath);
   }
 
   // 创建推断会话

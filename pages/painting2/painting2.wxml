@@ -6,9 +6,9 @@
   <view wx:if="{{hasChoosedImg}}" style="flex: 1; position: relative;" catch:touchstart="hideBarsHandler">
     <image src="{{cover}}"
            mode="aspectFit"
-           style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1; width: {{canvasWidth}}px; height: {{canvasHeight}}px;"
+           style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 1; width: {{canvasWidth}}px; height: {{canvasHeight}}px;"
     />
-    <canvas style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 2; width: {{canvasWidth}}px; height: {{canvasHeight}}px;"
+    <canvas style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 2; width: {{canvasWidth}}px; height: {{canvasHeight}}px;"
             id="myCanvas"
             canvas-id="myCanvas"
             type="2d"
@@ -40,15 +40,20 @@
       </view>
     </view>
 
-    <view class="space" style="padding: 10rpx 10rpx 30rpx; font-size: 15rpx; line-height: 56rpx;">
+    <view class="space" style="padding: 10rpx 10rpx 30rpx; line-height: 40rpx;">
       <block>
       <button class="mini-btn" catch:tap="openFile">打开</button>
       </block>
       <button class="mini-btn" catch:tap="save">保存</button>
       <button class="mini-btn" type="primary" plain="{{!hasMask}}"  catch:tap="inPaint">消除</button>
       <button class="mini-btn" disabled="{{!hasPreviousCover}}" catch:tap="restore">回退</button>
-      <button class="mini-btn" catch:tap="clearRect">重选</button>
+      <button class="mini-btn" catch:tap="showBarsHandler">更多</button>
     </view>
+
+    <view class="bars {{showBars && 'show'}}" style="flex: 1; z-index: 999;" wx:if="{{showBars}}">
+        <button class="mini-btn" catch:tap="reloadModel">下载模型</button>
+    </view>
+
   </view>
 </view>
 

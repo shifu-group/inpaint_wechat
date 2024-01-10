@@ -24,7 +24,8 @@ Page({
     dpr: 1,
     migan: null,
     hasChoosedImg: false,
-    hasMask: false
+    hasMask: false,
+    showBars: false
   },
   /**
    * 生命周期函数--监听页面加载
@@ -37,7 +38,7 @@ Page({
         that.setData({
           canvasWidth: res.windowWidth,
           windowWidth: res.windowWidth,
-          canvasHeight: res.windowHeight - 100,
+          canvasHeight: res.windowHeight - 120,
           windowHeight: res.windowHeight
         })
       },
@@ -54,7 +55,7 @@ Page({
       title: '模型正在加载...'
     });
     const migan = new Migan();
-    migan.load().then(() => {
+    migan.load(false).then(() => {
       wx.hideLoading();
     }).catch(err => {
       console.log('模型加载报错：', err);
@@ -68,7 +69,7 @@ Page({
     this.setData({
       migan: migan
     });
-
+    wx.hideLoading();
     //this.initCanvas();
   },
 
@@ -385,8 +386,8 @@ Page({
           src: picPath,
           success: function (res) {
             let [height, width] = [Math.floor(that.data.windowWidth / res.width * res.height), that.data.windowWidth];
-            if (height > that.data.windowHeight - 100) {
-              height = that.data.windowHeight - 100;
+            if (height > that.data.windowHeight - 120) {
+              height = that.data.windowHeight - 120;
               width = Math.floor(height / res.height * res.width);
             }
             that.setData({
@@ -401,6 +402,33 @@ Page({
         })
       }
     })
+  },
+
+  //reloadModel
+  reloadModel() {
+    this.hideBarsHandler();
+    this.data.migan.dispose();
+    // Load the module
+    wx.showLoading({
+      title: '模型正在加载...'
+    });
+    const migan = new Migan();
+    migan.load(true).then(() => {
+      wx.hideLoading();
+    }).catch(err => {
+      console.log('模型加载报错：', err);
+      wx.showToast({
+        title: '模型加载失败，请重试',
+        icon: 'none',
+        duration: 2000,
+      });
+
+    });
+    this.setData({
+      migan: migan
+    });
+    wx.hideLoading();
+
   },
 
   //inPaint
