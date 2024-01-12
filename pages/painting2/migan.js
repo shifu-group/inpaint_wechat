@@ -478,6 +478,14 @@ export class Migan {
     return dst;
   }
 
+  minPool2D(src) {
+    let kernel = new cv.Mat.ones(5, 5, cv.CV_8U);
+    // 膨胀操作
+    let dst = new cv.Mat();
+    cv.erode(src, dst, kernel, new cv.Point(-1, -1), 1, cv.BORDER_CONSTANT, cv.morphologyDefaultBorderValue());
+    return dst;
+  }
+
   gaussianSmoothing(inputMat) {
     let channels = 1; // 设置为图像的通道数
     const kernelSize = 5; // 设置卷积核的大小

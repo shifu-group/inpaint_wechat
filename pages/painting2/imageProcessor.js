@@ -90,6 +90,47 @@ function convertAndResizeMask(inputMask, width, height) {
   return mask;
 }
 
+export async function scaleMask(maskFile, model, selectColor, isUp) {
+  try {
+    const originalMask = await loadImage(maskFile);
+    const maskInput = cv.imread(originalMask);
+    changMaskColor(maskInput, selectColor);
+    cv.cvtColor(maskInput, maskInput, cv.COLOR_RGBA2RGB);
+    cv.cvtColor(maskInput, maskInput, cv.COLOR_BGR2GRAY);
+    let convertedMask = new cv.Mat();
+    if (isUp) {
+        convertedMask = model.maxPool2D(maskInput);
+    } else {
+        convertedMask = model.minPool2D(maskInput);
+    }
+    const colorMat = new cv.Mat.ones(convertedMask.rows, convertedMask.cols, cv.CV_8UC4);
+
+    const colorMap = {
+      "#ff0000": [255, 0, 0, 255],
+      "#ffff00": [255, 255, 0, 255],
+      "#00CC00": [0, 204, 0, 255],
+    };
+    const rgbaArray = colorMap[selectColor];
+    if (rgbaArray) {
+      colorMat.setTo(rgbaArray);
+    } else {
+      colorMat.setTo([255, 255, 255, 255]);
+    }
+
+    const resultMat = new cv.Mat();
+    colorMat.copyTo(resultMat,convertedMask);
+    const resultFilePath = await saveImageDataToTempFile(resultMat);
+    maskInput.delete();
+    convertedMask.delete();
+    colorMat.delete();
+    resultMat.delete();
+
+    return resultFilePath;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 // 执行图像修复
 export async function inPaint(imageFile, maskFile, model, selectColor) {
   try {
@@ -139,7 +180,7 @@ function saveImageDataToTempFile(image) {
   return new Promise((resolve, reject) => {
     // 生成临时文件路径
     const number = Math.random();
-    const tempFilePath = wx.env.USER_DATA_PATH + '/pic_inpaint_' + number + '.jpg'
+    const tempFilePath = wx.env.USER_DATA_PATH + '/pic_inpaint_' + number + '.png';
     wx.getFileSystemManager().writeFile({
       filePath: tempFilePath,
       data: base64Img.replace(/^data:image\/\w+;base64,/, ""),
@@ -162,5 +203,5 @@ function imageDataToDataURL(input) {
     height: input.rows
   });
   cv.imshow(offscreenCanvas, input);
-  return offscreenCanvas.toDataURL(('image/jpg', 0.9));
+  return offscreenCanvas.toDataURL();
 }

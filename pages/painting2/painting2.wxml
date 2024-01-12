@@ -23,21 +23,20 @@
     <view class="space vertical_center">
       <!-- 颜色选择器代码 -->
     
-      <scroll-view scroll-x style="height: 60rpx;">
-        <view style="white-space: nowrap;display: flex;align-items: center">
-          <view style="width: 110rpx;font-size: 35rpx;">颜色：</view>
-          <block wx:for="{{colors}}" wx:key="index">
-            <view style="background-color: {{item}};" class="colorBtn {{selectColor == item && 'select'}}" catch:tap="colorChange" data-color="{{item}}"></view>
-          </block>
-        </view>
-      </scroll-view>
+      <view style="white-space: nowrap; display: flex; align-items: center; height: 50rpx;">
+        <button class="invisible-btn" catch:tap="showColorHandler">颜色: </button>
+        <view style="background-color: {{selectColor}};" class="colorBtn select" cdata-color="{{selectColor}}"></view>
+      </view>
+
 
       <!-- 字号调整代码 -->
-      <view style="margin-left: 20rpx;display: flex; align-items: center"> <!-- 添加了左边距，以增加两部分之间的间隔 -->
-        <view style="width: 110rpx;font-size: 35rpx ">粗细：</view>
-        <slider style="width: 200rpx; flex: 1;" value="{{selectSize}}" step="1" min="10" max="50" block-size="12" activeColor="#a88cf8" bindchange="sizeHandler" />
+      <view style="margin-left: 20rpx; margin-right: 20rpx; display: flex; align-items: center"> <!-- 添加了左边距，以增加两部分之间的间隔 -->
+        <button class="invisible-btn" catch:tap="showBrushHandler">笔刷:</button>
         <view style="width: 50rpx; text-align: right;font-size: 35rpx">{{selectSize}}</view>
       </view>
+      <button class="invisible-btn" catch:tap="scaleUpMask">放大</button>
+      <button class="invisible-btn" catch:tap="scaleDownMask">缩小</button>
+
     </view>
 
     <view class="space" style="padding: 10rpx 10rpx 30rpx; line-height: 40rpx;">
@@ -52,7 +51,24 @@
     </view>
 
     <view class="bars {{showBars && 'show'}}" style="flex: 1; z-index: 999;" wx:if="{{showBars}}">
-        <button class="mini-btn" catch:tap="reloadModel">下载模型</button>
+      <button class="mini-btn" catch:tap="reloadModel">下载模型</button>
+    </view>
+
+    <view class="bars {{showBrush && 'show'}}" style="flex: 1; z-index: 999;" wx:if="{{showBrush}}">
+      <view class="space vertical_center">
+        <view style="width: 150rpx;font-size: 30rpx ">粗细：</view>
+        <slider style="flex: 1;" value="{{selectSize}}" step="1" min="10" max="50" block-size="12" activeColor="#a88cf8" bindchange="sizeHandler" />
+        <view style="width: 50rpx; text-align: right;font-size: 30rpx">{{selectSize}}</view>
+      </view>
+    </view>
+
+    <view class="bars {{showColor && 'show'}}" style="flex: 1; z-index: 999;"  wx:if="{{showColor}}">
+      <view class="space vertical_center" >
+          <view style="width: 150rpx; font-size: 30rpx;">选择颜色：</view>
+          <block wx:for="{{colors}}" wx:key="index">
+              <view style="background-color: {{item}};" class="colorBtn {{selectColor == item && 'select'}}" catch:tap="colorChange" data-color="{{item}}"></view>
+          </block>
+      </view>
     </view>
 
   </view>

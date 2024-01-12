@@ -7,10 +7,10 @@ page {
 }
 
 .colorBtn {
-  width: 50rpx;
-  height: 50rpx;
+  width: 45rpx;
+  height: 45rpx;
   border-radius: 50%;
-  margin-right: 20rpx;
+  margin-right: 10rpx;
   display: inline-block;
   border: 3rpx solid white;
 }
@@ -60,4 +60,13 @@ slider {
   margin-top: 100px;
   text-align: center;
   color: #888;
+}
+
+.invisible-btn {
+  background-color: transparent; /* 设置背景为透明 */
+  border: none; /* 移除边框 */
+  outline: none; /* 移除轮廓 */
+  cursor: pointer; /* 鼠标指针样式，可根据需要调整 */
+  font-size: 30rpx;
+  font-weight: bold;  /* 设置字体为黑体 */
 }

@@ -15,6 +15,8 @@ Page({
     scale: 1,
     imageList: [],
     showBars: false,
+    showBrush: false,
+    showColor: false,
     selectSize: wx.getStorageSync('selectSize') || 20,
     selectColor: wx.getStorageSync('selectColor') || '#ff0000',
     colors: ["#ff0000", "#ffff00", "#00CC00"],
@@ -25,8 +27,7 @@ Page({
     migan: null,
     hasChoosedImg: false,
     hasMask: false,
-    showBars: false
-  },
+   },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -169,8 +170,8 @@ Page({
       // 缩放
       context.scale(dpr, dpr);
       // 设置默认属性
-      context.globalAlpha = 0.8;
-      context.globalCompositeOperation = "xor";
+      //context.globalAlpha = 0.5;
+      //context.globalCompositeOperation = "destination-over";
       context.strokeStyle = This.selectColor;
       context.lineWidth = This.selectSize;
       this.setData({
@@ -229,7 +230,7 @@ Page({
       } else {
         ctx.moveTo(This.oldPosition.x, This.oldPosition.y);
         ctx.lineTo(position.x, position.y);
-        ctx.stroke()
+        ctx.stroke();
       };
       ctx.closePath();
       this.setData({
@@ -251,13 +252,63 @@ Page({
   // 是否展示 操作栏
   showBarsHandler() {
     this.setData({
-      showBars: !this.data.showBars
+      showBars: !this.data.showBars,
+      showBrush: false,
+      showColor: false
     })
   },
   hideBarsHandler() {
     this.setData({
-      showBars: false
+      showBars: false,
+      showBrush: false,
+      showColor: false
     })
+  },
+
+  showBrushHandler() {
+    this.setData({
+      showBrush: !this.data.showBrush,
+      showBars: false,
+      showColor: false
+    })
+  },
+
+  showColorHandler() {
+    this.setData({
+      showColor: !this.data.showColor,
+      showBars: false,
+      showBrush: false,
+    })
+  },
+
+  async scaleUpMask() {
+    await this.scaleMask(true);
+  },
+
+  async scaleDownMask() {
+    await this.scaleMask(false);
+  },
+
+  async scaleMask(isUp) {
+    try {
+      let maskUrl = this.data.imageList[0];
+      let resultPath = await imageProcessor.scaleMask(maskUrl, this.data.migan, this.data.selectColor, isUp);
+      const ctx = this.data.canvasContext;
+      const canvas = this.data.canvasElement;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const image = canvas.createImage();
+      await new Promise(function (resolve, reject) {
+        image.onload = resolve;
+        image.src = resultPath;
+      });
+      let dpr =this.data.dpr;
+      ctx.scale(1 / dpr, 1 / dpr);
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      ctx.scale(dpr, dpr);
+      this.data.imageList[0] = resultPath;
+    } catch (error) {
+      console.error('掩码图像出错：', error);
+    }
   },
 
   // 回退一步
