@@ -59,7 +59,7 @@ Page({
     }).catch(err => {
       console.log('模型加载报错：', err);
       wx.showToast({
-        title: '模型加载失败，请重试',
+        title: '模型加载失败，请手动加载模型',
         icon: 'none',
         duration: 2000,
       });
