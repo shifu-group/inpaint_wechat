@@ -1,5 +1,30 @@
 <!--painting-2.wxml-->
-<view style="height: 100vh;" class="flex_column" catch:tap="hideBarsHandler">
+<view style="height: 100vh;" class="flex_column">
+  <view class="divLine"/>
+  <view class="space vertical_center"  catch:tap="hideBarsHandler">
+  <!-- 颜色选择器代码 -->
+
+    <view style="display: flex;align-items: center">
+      <cover-image class="image" src="../../static/icons/paint.png"/>
+      <block wx:for="{{colors}}" wx:key="index">
+        <view style="background-color: {{item}};" class="colorBtn {{selectColor == item && 'select'}}" catch:tap="colorChange" data-color="{{item}}"></view>
+      </block>
+    </view>
+    <!-- 字号调整代码 -->
+    <view style="margin-left: 30rpx; display: flex; align-items: center">
+      <cover-image class="image" src="../../static/icons/brush.png"/>
+      <slider style="width: 120rpx; flex: 1;" value="{{selectSize}}" step="1" min="10" max="50" block-size="22" activeColor="#a88cf8" bindchange="sizeHandler" />
+      <view style="width: 40rpx; text-align: center;font-size: 30rpx">{{selectSize}}</view>
+    </view>
+
+    <!-- 掩码图片缩放 -->
+    <view style="margin-left: 30rpx;display: flex; align-items: center">
+      <cover-image class="image1" bindtap="{{hasMask ? 'scaleUpMask' : ''}}" src="../../static/icons/zoom-in.png"/>
+      <cover-image class="image1" bindtap="{{hasMask ? 'scaleDownMask' : ''}}" src="../../static/icons/zoom-out.png"/>
+    </view>
+  </view>
+
+  <view class="divLine"/>
   <!-- 涂鸦区 -->
   <view style="flex: 1; position: relative;" class="failText" wx:if="{{!hasChoosedImg}}" catch:tap="openFile">没有选择照片，点击选择</view>
 
@@ -18,60 +43,56 @@
             binderror="errorClick">
     </canvas>
   </view>
+
+  <view class="divLine"/>
   <!-- 涂鸦工具区 -->
-  <view style="padding: 20rpx 30rpx 20rpx; ">
-    <view class="space vertical_center">
-      <!-- 颜色选择器代码 -->
-    
-      <view style="white-space: nowrap; display: flex; align-items: center; height: 50rpx;">
-        <button class="invisible-btn" catch:tap="showColorHandler">颜色: </button>
-        <view style="background-color: {{selectColor}};" class="colorBtn select" cdata-color="{{selectColor}}"></view>
+  <view class="bottom-con">
+    <view class="l-menu">
+      <view bindtap="openFile" class="item">
+        <view class="image-wrap">
+          <cover-image class="image" src="../../static/icons/folder-open.png"/>
+        </view>
+        <view class="name">打开</view>
       </view>
-
-
-      <!-- 字号调整代码 -->
-      <view style="margin-left: 20rpx; margin-right: 20rpx; display: flex; align-items: center"> <!-- 添加了左边距，以增加两部分之间的间隔 -->
-        <button class="invisible-btn" catch:tap="showBrushHandler">笔刷:</button>
-        <view style="width: 50rpx; text-align: right;font-size: 35rpx">{{selectSize}}</view>
+      <view bindtap="save" class="item">
+        <view class="image-wrap">
+          <cover-image class="image" src="../../static/icons/save.png"/>
+        </view>
+        <view class="name">保存</view>
       </view>
-      <button class="invisible-btn" catch:tap="scaleUpMask">放大</button>
-      <button class="invisible-btn" catch:tap="scaleDownMask">缩小</button>
-
+      <view bindtap="{{hasMask ? 'inPaint' : ''}}" class="item">
+        <view class="image-wrap" style="border: 2px solid #676767">
+          <cover-image class="image" src="../../static/icons/caret-right.png"/>
+        </view>
+        <view class="name">消除</view>
+      </view>
+      <view bindtap="{{hasPreviousCover ? 'restore' : ''}}" class="item">
+        <view class="image-wrap">
+          <cover-image class="image" src="../../static/icons/undo.png"/>
+        </view>
+        <view class="name">回退</view>
+      </view>
     </view>
-
-    <view class="space" style="padding: 10rpx 10rpx 30rpx; line-height: 40rpx;">
-      <block>
-      <button class="mini-btn" catch:tap="openFile">打开</button>
-      </block>
-      <button class="mini-btn" catch:tap="save">保存</button>
-      <button class="mini-btn" type="primary" plain="{{!hasMask}}"  catch:tap="inPaint">消除</button>
-      <button class="mini-btn" disabled="{{!hasPreviousCover}}" catch:tap="restore">回退</button>
-      <button class="mini-btn" catch:tap="clearRect">重选</button>
-      <button class="mini-btn" catch:tap="showBarsHandler">更多</button>
+    <view class="l-menu">
+      <view bindtap="clearRect" class="item">
+        <view class="image-wrap">
+          <cover-image class="image" src="../../static/icons/clear.png"/>
+        </view>
+        <view class="name">重选</view>
+      </view>
+      <view bindtap="showBarsHandler" class="item">
+        <view class="image-wrap">
+          <cover-image class="image" src="../../static/icons/ellipsis.png"/>
+        </view>
+        <view class="name" stype="font-size: 10rpx">更多</view>
+      </view>
     </view>
-
     <view class="bars {{showBars && 'show'}}" style="flex: 1; z-index: 999;" wx:if="{{showBars}}">
       <button class="mini-btn" catch:tap="reloadModel">下载模型</button>
     </view>
-
-    <view class="bars {{showBrush && 'show'}}" style="flex: 1; z-index: 999;" wx:if="{{showBrush}}">
-      <view class="space vertical_center">
-        <view style="width: 150rpx;font-size: 30rpx ">粗细：</view>
-        <slider style="flex: 1;" value="{{selectSize}}" step="1" min="10" max="50" block-size="12" activeColor="#a88cf8" bindchange="sizeHandler" />
-        <view style="width: 50rpx; text-align: right;font-size: 30rpx">{{selectSize}}</view>
-      </view>
-    </view>
-
-    <view class="bars {{showColor && 'show'}}" style="flex: 1; z-index: 999;"  wx:if="{{showColor}}">
-      <view class="space vertical_center" >
-          <view style="width: 150rpx; font-size: 30rpx;">选择颜色：</view>
-          <block wx:for="{{colors}}" wx:key="index">
-              <view style="background-color: {{item}};" class="colorBtn {{selectColor == item && 'select'}}" catch:tap="colorChange" data-color="{{item}}"></view>
-          </block>
-      </view>
-    </view>
-
   </view>
+
+
 </view>
 
 

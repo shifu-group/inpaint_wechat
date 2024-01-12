@@ -15,8 +15,6 @@ Page({
     scale: 1,
     imageList: [],
     showBars: false,
-    showBrush: false,
-    showColor: false,
     selectSize: wx.getStorageSync('selectSize') || 20,
     selectColor: wx.getStorageSync('selectColor') || '#ff0000',
     colors: ["#ff0000", "#ffff00", "#00CC00"],
@@ -39,7 +37,7 @@ Page({
         that.setData({
           canvasWidth: res.windowWidth,
           windowWidth: res.windowWidth,
-          canvasHeight: res.windowHeight - 120,
+          canvasHeight: res.windowHeight - 100,
           windowHeight: res.windowHeight
         })
       },
@@ -252,32 +250,12 @@ Page({
   // 是否展示 操作栏
   showBarsHandler() {
     this.setData({
-      showBars: !this.data.showBars,
-      showBrush: false,
-      showColor: false
+      showBars: !this.data.showBars
     })
   },
   hideBarsHandler() {
     this.setData({
-      showBars: false,
-      showBrush: false,
-      showColor: false
-    })
-  },
-
-  showBrushHandler() {
-    this.setData({
-      showBrush: !this.data.showBrush,
-      showBars: false,
-      showColor: false
-    })
-  },
-
-  showColorHandler() {
-    this.setData({
-      showColor: !this.data.showColor,
-      showBars: false,
-      showBrush: false,
+      showBars: false
     })
   },
 
@@ -439,8 +417,8 @@ Page({
           src: picPath,
           success: function (res) {
             let [height, width] = [Math.floor(that.data.windowWidth / res.width * res.height), that.data.windowWidth];
-            if (height > that.data.windowHeight - 120) {
-              height = that.data.windowHeight - 120;
+            if (height > that.data.windowHeight - 100) {
+              height = that.data.windowHeight - 100;
               width = Math.floor(height / res.height * res.width);
             }
             that.setData({
