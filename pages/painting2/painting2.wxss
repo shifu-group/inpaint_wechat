@@ -78,7 +78,7 @@ slider {
 }
 
 .mini-btn{
-  font-size: 25rpx;
+  font-size: 30rpx;
 }
 
 .failText {
