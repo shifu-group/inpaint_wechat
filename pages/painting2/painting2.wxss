@@ -104,6 +104,7 @@ slider {
     display: flex;
     margin-left: 60rpx;
     margin-top: 10rpx;
+    margin-bottom: 10rpx;
 }
 
 .bottom-con .l-menu .item {
@@ -117,15 +118,15 @@ slider {
 .bottom-con .l-menu .item .name {
     color: #000;
     font-family: PingFangSC-Medium,PingFang SC;
-    font-size: 20rpx;
+    font-size: 30rpx;
     font-weight: 500;
-    line-height: 28rpx;
+    line-height: 40rpx;
     margin-top: 15rpx;
 }
 
 .bottom-con .l-menu .item .image-wrap {
     align-items: center;
-    border: 1px solid #676767;
+    border: 1px solid #999999;
     border-radius: 50%;
     box-sizing: border-box;
     display: flex;
