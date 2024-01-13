@@ -61,13 +61,13 @@
         <view class="name">保存</view>
       </view>
       <view bindtap="{{hasMask ? 'inPaint' : ''}}" class="item">
-        <view class="image-wrap" style="border: 2px solid #676767">
+        <view class="image-wrap" style="border: 2px solid #676767; {{hasMask ? 'background-color: #9cf;' : ''}}">
           <cover-image class="image" src="../../static/icons/caret-right.png"/>
         </view>
         <view class="name">消除</view>
       </view>
       <view bindtap="{{hasPreviousCover ? 'restore' : ''}}" class="item">
-        <view class="image-wrap">
+        <view class="image-wrap" style="{{hasPreviousCover ? 'background-color: #9cf;' : ''}}">
           <cover-image class="image" src="../../static/icons/undo.png"/>
         </view>
         <view class="name">回退</view>

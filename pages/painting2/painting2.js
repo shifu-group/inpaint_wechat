@@ -241,7 +241,9 @@ Page({
   },
   //触摸结束
   endTouchClick(e) {
-    this.saveImage();
+    if (this.data.isDraw) {
+      this.saveImage();
+    };
   },
   //误触事件
   errorClick(e) {
