@@ -50,9 +50,12 @@ Please note that this operation is irreversible.
 - [x] New UI. 
      
       新的界面
+- [x] Manual download AI model
+
+      手动下载AI模型
 - [ ] Enlarge the image and apply a mask to a specific portion of the area. 
      
-      放大图像并在特定区域涂抹遮罩, 工作进行中。。。
+      放大图像并在指定区域涂抹遮罩, 工作进行中。。。
 - [ ] Workflow UI. 
   
       工作流式界面，现有的界面可以看作工作室模式，计划两者共存。
