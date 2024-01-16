@@ -1,0 +1,9 @@
+{
+    "navigationBarTitleText": "照片修复小小助手",
+    "navigationBarBackgroundColor": "#9cf",
+    "navigationBarTextStyle": "white",
+    "disableScroll": true,
+    "usingComponents": {
+        "image-cropper": "../../component/image-cropper/image-cropper"
+    }
+}

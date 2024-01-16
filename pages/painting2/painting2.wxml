@@ -29,7 +29,7 @@
   <view style="flex: 1; position: relative;" class="failText" wx:if="{{!hasChoosedImg}}" catch:tap="openFile">没有选择照片，点击选择</view>
 
   <view wx:if="{{hasChoosedImg}}" style="flex: 1; position: relative;" catch:touchstart="hideBarsHandler">
-    <image src="{{cover}}"
+    <image src="{{isCropped ? croppedCover: cover}}"
            mode="aspectFit"
            style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 1; width: {{canvasWidth}}px; height: {{canvasHeight}}px;"
     />
@@ -72,8 +72,12 @@
         </view>
         <view class="name">回退</view>
       </view>
-    </view>
-    <view class="l-menu">
+      <view bindtap="cropper" class="item">
+        <view class="image-wrap">
+          <cover-image class="image" src="../../static/icons/clear.png"/>
+        </view>
+        <view class="name">选区</view>
+      </view>
       <view bindtap="clearRect" class="item">
         <view class="image-wrap">
           <cover-image class="image" src="../../static/icons/clear.png"/>

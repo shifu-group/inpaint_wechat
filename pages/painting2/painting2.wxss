@@ -111,7 +111,7 @@ slider {
     align-items: center;
     display: flex;
     flex-direction: column;
-    margin-right: 40rpx;
+    margin-right: 30rpx;
     width: 70rpx;
 }
 

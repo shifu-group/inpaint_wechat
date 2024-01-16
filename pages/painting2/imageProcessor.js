@@ -90,6 +90,20 @@ function convertAndResizeMask(inputMask, width, height) {
   return mask;
 }
 
+export async function cropImage(imageUrl, croppedImageData) {
+  const originalImg = await loadImage(imageUrl);
+  const src = cv.imread(originalImg);
+
+  const x_min = Math.round(croppedImageData.startX * originalImg.width);
+  const y_min = Math.round(croppedImageData.startY * originalImg.height);
+  const width = Math.round(originalImg.width / croppedImageData.scale);
+  const height = Math.round(originalImg.height / croppedImageData.scale);
+
+  const croppedImg = src.roi(new cv.Rect(x_min, y_min, width, height));
+  const croppedImageUrl = await saveImageDataToTempFile(croppedImg)
+  return croppedImageUrl;
+}
+
 export async function scaleMask(maskFile, model, selectColor, isUp) {
   try {
     const originalMask = await loadImage(maskFile);

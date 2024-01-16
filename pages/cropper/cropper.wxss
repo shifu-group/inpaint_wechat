@@ -1,0 +1,34 @@
+.flex_column {
+  display: flex;
+  flex-direction: column !important;
+}
+
+.bottom-con {
+    position: absolute;
+    align-items: center;
+    background: transparent;
+    width: 100%;
+    bottom: 10rpx;
+    display: flex;
+    height: 100rpx;
+    justify-content: center;
+    left: 0rpx;
+    flex-wrap: wrap;
+    z-index: 999;
+}
+
+.button {
+    font-size: 27rpx;
+    z-index: 2;
+    padding: 0 20rpx;
+    height: 60rpx;
+    min-width: 60rpx;
+    margin: 0 60rpx;
+    background: #fff9f1;
+    border-radius: 30rpx;
+
+}
+
+
+
+

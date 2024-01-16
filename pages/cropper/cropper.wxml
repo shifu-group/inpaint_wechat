@@ -1,0 +1,12 @@
+<view style="height: 100vh;" class="flex_column">
+    <view style="width:100%;height:300rpx;">
+        <image-cropper type="2d" id="image-cropper" bindload="cropperload" bindimageload="loadimage" bindtapcut="clickcut" min_scale="{{min_scale}}" max_scale="{{max_scale}}" limit_move="{{limit_move}}" disable_rotate="{{disable_rotate}}" width="{{width}}" height="{{height}}" imgSrc="{{src}}" disable_width="{{disable_width}}" disable_height="{{disable_height}}" disable_ratio="{{disable_ratio}}" max_height="{{max_height}}" max_width="{{max_width}}" >
+        </image-cropper>
+    </view>
+
+    <view class="bottom-con">
+        <button class ="button" bindtap='submit'>确定</button>
+        <button class ="button" bindtap='cancel'>取消</button>
+                <button class ="button" bindtap='enlarge'>enlarge</button>
+    </view>
+</view>

@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/painting2/painting2",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/cropper/cropper"
   ],
   "window": {
     "backgroundTextStyle": "light",

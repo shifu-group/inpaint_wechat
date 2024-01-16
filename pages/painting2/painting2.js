@@ -25,12 +25,19 @@ Page({
     migan: null,
     hasChoosedImg: false,
     hasMask: false,
-   },
+    isCropped: false,
+    _isCropChanged: false,
+    croppedImageData: {
+      startX: 0,
+      startY: 0,
+      scale: 1
+    }
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    this.unlink();
+    this.unlinkAll();
     let that = this;
     wx.getSystemInfo({
       success: function (res) {
@@ -82,9 +89,9 @@ Page({
     if (This.migan && This.migan.isReady()) {
       This.migan.dispose();
     };
-    this.unlink();
+    this.unlinkAll();
   },
-  unlink: function (options) {
+  unlinkAll: function (options) {
     const basePath = `${wx.env.USER_DATA_PATH}`;
     wx.getFileSystemManager().readdir({
       dirPath: basePath, /// 获取文件列表
@@ -101,6 +108,36 @@ Page({
       }
     });
   },
+
+  unlink(filePath) {
+    wx.getFileSystemManager().unlink({
+      filePath: filePath
+    });
+  },
+
+  clearCroppedImage() {
+    this.setData({
+      isCropped: false
+    });
+    this.unlink(this.data.croppedCover);
+  },
+
+  async onShow() {
+    // 在这里处理从Cropper页面返回时的逻辑
+    if (getApp().globalData.returnFromCropper) {
+      if (this.data._isCropChanged) {
+        const croppedImage = await imageProcessor.cropImage(this.data.cover, this.data.croppedImageData);
+        this.setData({
+          _isCropChanged: false,
+          isCropped: true,
+          croppedCover: croppedImage
+        });
+        this.clearRect();
+      }
+      getApp().globalData.returnFromCropper = false;
+    };
+  },
+
   onShareAppMessage: function (options) {
     return {
       title: '照片修复小小助手',
@@ -324,6 +361,12 @@ Page({
     });
   },
 
+  cropper() {
+    wx.navigateTo({
+      url: `../cropper/cropper?imgSrc=${this.data.cover}&width=${this.data.canvasWidth}&height=${this.data.canvasHeight}`
+    })
+  },
+
   // 清空画布
   clearRect() {
     if (this.data.canvasContext) {
@@ -388,6 +431,9 @@ Page({
       this.setPreviousCover();
       // 清理操作
       this.clearRect();
+      if (this.data.isCropped) {
+        this.clearCroppedImage();
+      }
 
     } catch (error) {
       if (error.errMsg === 'saveImageToPhotosAlbum:fail auth deny') {
@@ -422,6 +468,9 @@ Page({
             if (height > that.data.windowHeight - 100) {
               height = that.data.windowHeight - 100;
               width = Math.floor(height / res.height * res.width);
+            };
+            if (that.data.isCropped) {
+              that.clearCroppedImage();
             }
             that.setData({
               canvasHeight: height,
