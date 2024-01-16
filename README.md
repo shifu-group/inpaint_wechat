@@ -22,11 +22,16 @@ Additionally, it integrates with WeChat-adapted OpenCV techniques to achieve mod
 注释：小程序首次执行时，会自动下载约30M AI模型到本机。
 
 ## Demo（1.选择图片  2.涂抹遮罩  3.消除）
-![照片修复小助手](media/002.jpg)
-![照片修复小助手](media/001.jpg)
-![照片修复小助手](media/003.jpg)
-![照片修复小助手](media/004.jpg)
-![照片修复小助手](media/005.jpg)
+
+<img src="media/002.jpg" alt="照片修复小助手" width="600"/>
+
+<img src="media/001.jpg" alt="照片修复小助手" width="600"/>
+
+<img src="media/003.jpg" alt="照片修复小助手" width="600"/>
+
+<img src="media/004.jpg" alt="照片修复小助手" width="600"/>
+
+<img src="media/005.jpg" alt="照片修复小助手" width="600"/>
 
 ## Video Demo（视频演示）
 
