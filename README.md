@@ -23,7 +23,7 @@ Additionally, it integrates with WeChat-adapted OpenCV techniques to achieve mod
 
 ## Demo（1.选择图片  2.涂抹遮罩  3.消除）
 
-<img src="media/002.jpg" alt="照片修复小助手" width="600"/>
+<img src="media/002.jpg" alt="照片修复小助手" width="600" style="border: 2px solid #000;/>
 
 <img src="media/001.jpg" alt="照片修复小助手" width="600"/>
 
