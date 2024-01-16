@@ -14,7 +14,13 @@ The program draws inspiration from the logic and some code of the original MI-GA
 Given the limited support for operators in WeChat mini-programs, to address this constraint, the program utilizes WebAssembly (wasm) technology. 
 Additionally, it integrates with WeChat-adapted OpenCV techniques to achieve model preprocessing and post-processing. 
 
-## 特点： 快速P图，P图，去水印，去字幕，P掉游客，修复照片,隐私,快捷等
+## 特点： 
+- 手机操作，快速去除图片中的杂物，是发朋友圈图片和其他类似需求的好帮手。 
+- 去水印，去字幕，去掉闲杂人物。。。 多尝试几次，总会有惊喜等着你。
+- 图片数据不上传，100% 确保隐私。
+
+注释：小程序首次执行时，会自动下载约30M AI模型到本机。
+
 
 ## Video Demo（视频演示）
 
@@ -22,8 +28,12 @@ Additionally, it integrates with WeChat-adapted OpenCV techniques to achieve mod
 https://github.com/shifu-group/inpaint_wechat/assets/104042064/06260321-8666-4950-bf9d-116485d5dc0a
 
 
-## Demo(1.选择图片  2.选择区域  3.消除)
-![照片修复小助手](media/merge.jpg)
+## Demo（1.选择图片  2.涂抹遮罩  3.消除）
+![照片修复小助手](media/002.jpg)
+![照片修复小助手](media/001.jpg)
+![照片修复小助手](media/003.jpg)
+![照片修复小助手](media/004.jpg)
+![照片修复小助手](media/005.jpg)
 ## QR Code for the Wechat App （扫描微信小程序二维码打开小程序）
 ![照片修复小助手](images/mini_code.jpg)
 
