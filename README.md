@@ -105,3 +105,7 @@ https://github.com/lxfater/inpaint-web
 - Adapted opencv for WeChat
 
 https://github.com/sanyuered/WeChat-MiniProgram-AR-WASM
+
+- Image Cropper
+
+https://github.com/1977474741/image-cropper
