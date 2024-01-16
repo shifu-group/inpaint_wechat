@@ -1,4 +1,11 @@
-# Inpaint_wechat(照片修复小小助手)
+# 照片修复小小助手 (Inpaint_wechat)
+照片修复小小助手是一款基于微信AI能力的微信小程序，实现了图片选定区域的消除修复功能，纯客户端实现，无服务端。
+
+
+本程序借鉴了 MI-GAN 原项目和 inpaint_web 网页实现项目的逻辑以及部分代码。
+
+鉴于微信小程序仅支持有限的算子，为了弥补这一限制，本程序采用了 WebAssembly (wasm) 技术，并结合适配微信的 OpenCV 技术，以实现对模型的预处理和后处理。
+
 Inpaint_wechat is a WeChat mini-program based on the WeChat AI capabilities, implementing the functionality of inpainting and repairing selected areas in images,  which is purely implemented by the client and has no server.
 
 
@@ -7,14 +14,8 @@ The program draws inspiration from the logic and some code of the original MI-GA
 Given the limited support for operators in WeChat mini-programs, to address this constraint, the program utilizes WebAssembly (wasm) technology. 
 Additionally, it integrates with WeChat-adapted OpenCV techniques to achieve model preprocessing and post-processing. 
 
+## 特点： 快速P图，P图，去水印，去字幕，P掉游客，修复照片等
 
-
-Inpaint_wechat是一款基于微信AI能力的微信小程序，实现了图片选定区域的消除修复功能，纯客户端实现，无服务端。
-
-
-本程序借鉴了 MI-GAN 原项目和 inpaint_web 网页实现项目的逻辑以及部分代码。
-
-鉴于微信小程序仅支持有限的算子，为了弥补这一限制，本程序采用了 WebAssembly (wasm) 技术，并结合适配微信的 OpenCV 技术，以实现对模型的预处理和后处理。
 ## Video Demo（视频演示）
 
 
