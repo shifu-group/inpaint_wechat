@@ -14,7 +14,7 @@ The program draws inspiration from the logic and some code of the original MI-GA
 Given the limited support for operators in WeChat mini-programs, to address this constraint, the program utilizes WebAssembly (wasm) technology. 
 Additionally, it integrates with WeChat-adapted OpenCV techniques to achieve model preprocessing and post-processing. 
 
-## 特点： 快速P图，P图，去水印，去字幕，P掉游客，修复照片等
+## 特点： 快速P图，P图，去水印，去字幕，P掉游客，修复照片,隐私,快捷等
 
 ## Video Demo（视频演示）
 
