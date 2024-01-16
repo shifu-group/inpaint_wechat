@@ -38,6 +38,28 @@ Please note that this operation is irreversible.
 
 如果对当前结果不满意，可以用“回退”来取消操作，再重新选择区域。注意此操作不可逆。
 
+## Product Roadmap (版本演进)
+
+- [x] Execution speed optimization. 
+
+      优化执行速度
+
+- [x] Manually adjust the mask to zoom in or out. 
+
+      遮罩手动扩大缩小
+- [x] New UI. 
+     
+      新的界面
+- [ ] Enlarge the image and apply a mask to a specific portion of the area. 
+     
+      放大图像并在特定区域涂抹遮罩, 工作进行中。。。
+- [ ] Workflow UI. 
+  
+      工作流式界面，现有的界面可以看作工作室模式，计划两者共存。
+- [ ] Segment anything 
+  
+      调用AI模型实现目标自动识别。 已完成技术调研，由于微信算子的限制，需要接入后端。暂无开发计划。
+
 ## Contact
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/zhiyuan?style=social)](https://x.com/zhiyuan54030554)
