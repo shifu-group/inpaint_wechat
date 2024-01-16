@@ -42,17 +42,17 @@ Please note that this operation is irreversible.
 
 - [x] Execution speed optimization. 
 
-      优化执行速度
+      优化执行速度，执行时间缩短2秒以上。
 
 - [x] Manually adjust the mask to zoom in or out. 
 
-      遮罩手动扩大缩小
+      遮罩手动扩大和缩小。
 - [x] New UI. 
      
-      新的界面
+      新的界面。
 - [x] Manual download AI model
 
-      手动下载AI模型
+      手动下载AI模型。
 - [ ] Enlarge the image and apply a mask to a specific portion of the area. 
      
       放大图像并在指定区域涂抹遮罩, 工作进行中。。。
