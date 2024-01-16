@@ -21,19 +21,17 @@ Additionally, it integrates with WeChat-adapted OpenCV techniques to achieve mod
 
 注释：小程序首次执行时，会自动下载约30M AI模型到本机。
 
-
-## Video Demo（视频演示）
-
-
-https://github.com/shifu-group/inpaint_wechat/assets/104042064/06260321-8666-4950-bf9d-116485d5dc0a
-
-
 ## Demo（1.选择图片  2.涂抹遮罩  3.消除）
 ![照片修复小助手](media/002.jpg)
 ![照片修复小助手](media/001.jpg)
 ![照片修复小助手](media/003.jpg)
 ![照片修复小助手](media/004.jpg)
 ![照片修复小助手](media/005.jpg)
+
+## Video Demo（视频演示）
+
+https://github.com/shifu-group/inpaint_wechat/assets/104042064/06260321-8666-4950-bf9d-116485d5dc0a
+
 ## QR Code for the Wechat App （扫描微信小程序二维码打开小程序）
 ![照片修复小助手](images/mini_code.jpg)
 
