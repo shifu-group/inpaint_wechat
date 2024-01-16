@@ -65,26 +65,26 @@ Please note that this operation is irreversible.
 
 - [x] Execution speed optimization. 
 
-      优化执行速度，执行时间缩短2秒以上。
+     优化执行速度，执行时间缩短2秒以上。
 
 - [x] Manually adjust the mask to zoom in or out. 
 
-      遮罩手动扩大和缩小。
+     遮罩手动扩大和缩小。
 - [x] New UI. 
      
-      新的界面。
+     新的界面。
 - [x] Manual download AI model
 
-      手动下载AI模型。
+     手动下载AI模型。
 - [ ] Enlarge the image and apply a mask to a specific portion of the area. 
      
-      放大图像并在指定区域涂抹遮罩, 工作进行中。。。
+     放大图像并在指定区域涂抹遮罩, 工作进行中。。。
 - [ ] Workflow UI. 
   
-      工作流式界面，现有的界面可以看作工作室模式，计划两者共存。
+     工作流式界面，现有的界面可以看作工作室模式，计划两者共存。
 - [ ] Segment anything 
   
-      调用AI模型实现目标自动识别。 已完成技术调研，由于微信算子的限制，需要接入后端。暂无开发计划。
+     调用AI模型实现目标自动识别。 已完成技术调研，由于微信算子的限制，需要接入后端。暂无开发计划。
 
 ## Contact
 
