@@ -74,7 +74,7 @@
       </view>
       <view bindtap="cropper" class="item">
         <view class="image-wrap">
-          <cover-image class="image" src="../../static/icons/clear.png"/>
+          <cover-image class="image" src="../../static/icons/drag.png"/>
         </view>
         <view class="name">选区</view>
       </view>
@@ -82,7 +82,7 @@
         <view class="image-wrap">
           <cover-image class="image" src="../../static/icons/clear.png"/>
         </view>
-        <view class="name">重选</view>
+        <view class="name">重设</view>
       </view>
       <view bindtap="showBarsHandler" class="item">
         <view class="image-wrap">
