@@ -8,7 +8,7 @@
     align-items: center;
     background: transparent;
     width: 100%;
-    bottom: 10rpx;
+    bottom: 20rpx;
     display: flex;
     height: 100rpx;
     justify-content: center;
@@ -18,10 +18,10 @@
 }
 
 .button {
-    font-size: 27rpx;
+    font-size: 30rpx;
     z-index: 2;
     padding: 0 20rpx;
-    height: 60rpx;
+    height: 70rpx;
     min-width: 60rpx;
     margin: 0 60rpx;
     background: #fff9f1;

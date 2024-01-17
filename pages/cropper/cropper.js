@@ -15,25 +15,36 @@ Page({
         max_scale: 16,
         min_scale: 1
     },
+
+    attached() {
+        console.log("aa");
+    },
+
     onLoad: function (options) {
+        const width = Math.round( options.width * 0.95);
+        const height = Math.round( options.height * 0.95);
         this.cropper = this.selectComponent("#image-cropper");
+        this.setData({
+            width: width,
+            height: height,
+            max_width: width,
+            max_height: height
+        });
         this.cropper.setCutCenter();
         this.setData({
-            src: options.imgSrc,
-            width: options.width,
-            height: options.height,
-            max_width: options.width,
-            max_height: options.height
+             src: options.imgSrc
         });
     },
+
     cropperload(e) {
-        console.log('cropper加载完成');
+        // console.log('cropper加载完成');
     },
+
     loadimage(e) {
         wx.hideLoading();
-        console.log('图片');
-        this.cropper.imgReset();
+        // console.log('图片');
     },
+
     clickcut(e) {
         console.log(e.detail);
         //图片预览
@@ -42,6 +53,7 @@ Page({
             urls: [e.detail.url] // 需要预览的图片http链接列表
         })
     },
+
     submit() {
         this.cropper.getImgData((obj) => {
             const pages = getCurrentPages();
@@ -88,11 +100,9 @@ Page({
     },
 
     enlarge() {
-        this.data.enlarge = setInterval(() => {
-            this.cropper.setTransform({
-                scale: 0.02
-            });
-        }, 1000 / 60)
+        this.cropper.setTransform({
+            scale: 0.20
+        });
     },
     end(e) {
         clearInterval(this.data[e.currentTarget.dataset.type]);

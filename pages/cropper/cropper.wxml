@@ -7,6 +7,5 @@
     <view class="bottom-con">
         <button class ="button" bindtap='submit'>确定</button>
         <button class ="button" bindtap='cancel'>取消</button>
-                <button class ="button" bindtap='enlarge'>enlarge</button>
     </view>
 </view>

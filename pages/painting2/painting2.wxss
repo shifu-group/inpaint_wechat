@@ -46,7 +46,7 @@ slider {
   background: #fff9f1;
   align-items: center;
   display: flex;
-  height: 93rpx;
+  height: 95rpx;
   justify-content: center;
   padding-bottom: 5rpx;
   padding-left: 20rpx;
@@ -97,6 +97,7 @@ slider {
     left: 0rpx;
     width: 100%;
     z-index: 101;
+    margin-top: 10rpx;
 }
 
 .bottom-con .l-menu {
@@ -121,7 +122,7 @@ slider {
     font-size: 30rpx;
     font-weight: 500;
     line-height: 40rpx;
-    margin-top: 15rpx;
+    margin-top: 10rpx;
 }
 
 .bottom-con .l-menu .item .image-wrap {

@@ -44,7 +44,7 @@ Page({
         that.setData({
           canvasWidth: res.windowWidth,
           windowWidth: res.windowWidth,
-          canvasHeight: res.windowHeight - 100,
+          canvasHeight: res.windowHeight - 120,
           windowHeight: res.windowHeight
         })
       },
@@ -362,9 +362,11 @@ Page({
   },
 
   cropper() {
-    wx.navigateTo({
-      url: `../cropper/cropper?imgSrc=${this.data.cover}&width=${this.data.canvasWidth}&height=${this.data.canvasHeight}`
-    })
+    if (this.data.hasChoosedImg) {
+      wx.navigateTo({
+        url: `../cropper/cropper?imgSrc=${this.data.cover}&width=${this.data.canvasWidth}&height=${this.data.canvasHeight}`
+      })
+    }
   },
 
   // 清空画布
@@ -465,8 +467,8 @@ Page({
           src: picPath,
           success: function (res) {
             let [height, width] = [Math.floor(that.data.windowWidth / res.width * res.height), that.data.windowWidth];
-            if (height > that.data.windowHeight - 100) {
-              height = that.data.windowHeight - 100;
+            if (height > that.data.windowHeight - 120) {
+              height = that.data.windowHeight - 120;
               width = Math.floor(height / res.height * res.width);
             };
             if (that.data.isCropped) {
@@ -542,10 +544,18 @@ Page({
     if (this.data.isDraw) {
       try {
         // 在 canvas 中显示处理结果的临时文件路径
-        let imageUrl = this.data.cover;
+        const imageInfo = {
+          cover: this.data.cover,
+          croppedCover: this.data.croppedCover,
+          isCropped: this.data.isCropped,
+          croppedImageData: this.data.croppedImageData
+        };
         let maskUrl = this.data.imageList[0];
-        let resultPath = await imageProcessor.inPaint(imageUrl, maskUrl, this.data.migan, this.data.selectColor);
+        let resultPath = await imageProcessor.inPaint(imageInfo, maskUrl, this.data.migan, this.data.selectColor);
         // 更新页面数据，显示处理结果的图片路径
+        if (this.data.isCropped) {
+          this.clearCroppedImage();
+        }
         const ctx = this.data.canvasContext;
         const canvas = this.data.canvasElement;
         ctx.clearRect(0, 0, canvas.width, canvas.height);

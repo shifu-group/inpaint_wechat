@@ -94,15 +94,18 @@ export async function cropImage(imageUrl, croppedImageData) {
   const originalImg = await loadImage(imageUrl);
   const src = cv.imread(originalImg);
 
-  const x_min = Math.round(croppedImageData.startX * originalImg.width);
-  const y_min = Math.round(croppedImageData.startY * originalImg.height);
-  const width = Math.round(originalImg.width / croppedImageData.scale);
-  const height = Math.round(originalImg.height / croppedImageData.scale);
+  let x_min = Math.floor(croppedImageData.startX * originalImg.width);
+  x_min = Math.min(Math.max(x_min, 0), src.cols);
+  let y_min = Math.floor(croppedImageData.startY * originalImg.height);
+  y_min = Math.min(Math.max(y_min, 0), src.rows);
+  let width = Math.floor(originalImg.width / croppedImageData.scale) - 1;
+  let height = Math.floor(originalImg.height / croppedImageData.scale) - 1;
 
   const croppedImg = src.roi(new cv.Rect(x_min, y_min, width, height));
   const croppedImageUrl = await saveImageDataToTempFile(croppedImg)
   return croppedImageUrl;
 }
+
 
 export async function scaleMask(maskFile, model, selectColor, isUp) {
   try {
@@ -146,8 +149,9 @@ export async function scaleMask(maskFile, model, selectColor, isUp) {
 }
 
 // 执行图像修复
-export async function inPaint(imageFile, maskFile, model, selectColor) {
+export async function inPaint(imageInfo, maskFile, model, selectColor) {
   try {
+    const imageFile = imageInfo.isCropped ? imageInfo.croppedCover : imageInfo.cover;
 
     // 异步加载原始图像和掩码图像
     const originalImg = await loadImage(imageFile);
@@ -168,7 +172,15 @@ export async function inPaint(imageFile, maskFile, model, selectColor) {
 
     // 执行模型推理
     const resultImage = await model.execute(img, mask, src);
-    const resultFilePath = await saveImageDataToTempFile(resultImage);
+
+    let resultFilePath;
+    if  (imageInfo.isCropped) {
+      const mergedResultImage = await mergeCroppedImage(imageInfo, resultImage);
+       resultFilePath = await saveImageDataToTempFile(mergedResultImage);
+    } else {
+      resultFilePath = await saveImageDataToTempFile(resultImage);
+    };
+
     mask.delete();
     img.delete();
     src.delete();
@@ -187,6 +199,21 @@ export async function inPaint(imageFile, maskFile, model, selectColor) {
     }, 200)
     throw error;
   }
+}
+
+async function mergeCroppedImage(imageInfo, croppedImage) {
+  const originalImg = await loadImage(imageInfo.cover);
+  const src = cv.imread(originalImg);
+
+  let x_min = Math.floor(imageInfo.croppedImageData.startX * originalImg.width);
+  x_min = Math.min(Math.max(x_min, 0), src.cols);
+  let y_min = Math.floor(imageInfo.croppedImageData.startY * originalImg.height);
+  y_min = Math.min(Math.max(y_min, 0), src.rows);
+  let width = Math.floor(originalImg.width / imageInfo.croppedImageData.scale) - 1;
+  let height = Math.floor(originalImg.height / imageInfo.croppedImageData.scale) - 1;
+  croppedImage.copyTo(src.roi(new cv.Rect(x_min, y_min, width, height)));
+
+  return src;
 }
 
 function saveImageDataToTempFile(image) {

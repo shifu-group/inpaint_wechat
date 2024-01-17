@@ -31,9 +31,9 @@
   <view wx:if="{{hasChoosedImg}}" style="flex: 1; position: relative;" catch:touchstart="hideBarsHandler">
     <image src="{{isCropped ? croppedCover: cover}}"
            mode="aspectFit"
-           style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 1; width: {{canvasWidth}}px; height: {{canvasHeight}}px;"
+           style="position: absolute; top: 0; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; width: {{canvasWidth}}px; height: {{canvasHeight}}px;"
     />
-    <canvas style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 2; width: {{canvasWidth}}px; height: {{canvasHeight}}px;"
+    <canvas style="position: absolute; top: 0; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 998; width: {{canvasWidth}}px; height: {{canvasHeight}}px;"
             id="myCanvas"
             canvas-id="myCanvas"
             type="2d"

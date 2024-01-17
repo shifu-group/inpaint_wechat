@@ -659,7 +659,7 @@ Component({
                     img_height = this.data.img_width;
                 }
                 // modified for inpaint_wechat
-                /*
+
                 left = this.data.cut_left + img_width * scale / 2 >= left ? left : this.data.cut_left + img_width * scale / 2;
                 left = this.data.cut_left + this.data.width - img_width * scale / 2 <= left ? left : this.data.cut_left + this.data.width - img_width * scale / 2;
                 top = this.data.cut_top + img_height * scale / 2 >= top ? top : this.data.cut_top + img_height * scale / 2;
@@ -669,7 +669,7 @@ Component({
                     _img_top: top,
                     scale: scale
                 })
-                */
+                /*
                 let new_cut_left = left - img_width / 2;
                 let new_cut_right = top - img_height / 2;
                 this.setData({
@@ -677,6 +677,7 @@ Component({
                     cut_top: new_cut_right,
                     scale: scale
                 });
+                */
                 //  modified end
             },
             /**
